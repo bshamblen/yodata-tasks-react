@@ -47857,9 +47857,7 @@ module.exports = React.createClass({
 			if (this.props.selectedTag) {
 				selectedTagHeader = (
 					React.createElement("div", {className: "alert alert-info", role: "alert", onClick: this.handleTagClear}, 
-						React.createElement("button", {type: "button", className: "close btn-tag-filter-close", "aria-label": "Close"}, 
-							React.createElement("span", {"aria-hidden": "true"}, "×")
-						), 
+						React.createElement("button", {type: "button", className: "close btn-tag-filter-close", "aria-label": "Close"}, "x"), 
 						React.createElement("div", null, "Filtering by tag: ", React.createElement("strong", null, this.props.selectedTag))
 					)
 				);

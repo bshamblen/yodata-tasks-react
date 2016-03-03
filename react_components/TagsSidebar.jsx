@@ -35,9 +35,7 @@ module.exports = React.createClass({
 			if (this.props.selectedTag) {
 				selectedTagHeader = (
 					<div className="alert alert-info" role="alert" onClick={this.handleTagClear}>
-						<button type="button" className="close btn-tag-filter-close" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
+						<button type="button" className="close btn-tag-filter-close" aria-label="Close">x</button>
 						<div>Filtering by tag: <strong>{this.props.selectedTag}</strong></div>
 					</div>
 				);
