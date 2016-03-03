@@ -19,7 +19,8 @@ module.exports = React.createClass({
 	},
 	getInitialState() {
 		return {
-			saving: false
+			saving: false,
+			error: null
 		}
 	},
 	showAttachmentsModal() {
@@ -110,6 +111,8 @@ module.exports = React.createClass({
 		});
 	},
 	onEntered() {
+		this.setState({error: null, saving: false});
+
 		if (this.props.show) {
 			$('#tags').tagsinput();
 			$('#tags').on('beforeItemAdd', function(event) {
