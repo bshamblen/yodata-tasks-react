@@ -1,0 +1,39 @@
+{
+  "name": "yodata-tasks-react",
+  "keywords": [
+    "yodata",
+    "react",
+    "tasks",
+    "example"
+  ],
+  "author": {
+    "name": "Brian Shamblen",
+    "email": "brian@shamblen.com",
+    "url": "https://github.com/bshamblen"
+  },
+  "repository": {
+    "url": "https://github.com/bshamblen/yodata-tasks-react",
+    "type": "git"
+  },
+  "version": "0.0.1",
+  "private": false,
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "express": "4.x",
+    "react": "^0.14.7",
+    "react-dom": "^0.14.7",
+    "grunt": "0.4.5",
+    "browserify": "13.0.0",
+    "grunt-browserify": "4.0.1",
+    "grunt-react": "0.12.3",
+    "grunt-contrib-watch": "0.6.1",
+    "react-bootstrap-switch": "3.4.2",
+    "fbemitter": "2.0.2",
+    "react-bootstrap": "0.28.3",
+    "underscore": "1.8.3"
+  },
+  "license": "MIT"
+}

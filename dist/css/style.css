@@ -1,0 +1,47 @@
+.task-muted {
+	color: silver;
+}
+
+.file-row {
+	padding-left: 15px !important;
+	padding-right: 15px !important;
+}
+
+.navbar-inverse .navbar-brand {
+	color: white;
+}
+
+.navbar-inverse .navbar-brand:hover {
+	color: silver;
+}
+
+.btn-task-tag {
+	margin-top: 4px;
+	margin-bottom: 4px;
+}
+
+.yd-brand-logo {
+	height:20px; 
+	width:20px; 
+	vertical-align: text-bottom;
+	content:url(https://yodata.io/images/yodata-circle.png);
+}
+
+#welcomeMessage {
+	padding-bottom:10px;
+}
+
+.yodata-task {
+	font-size: 14px;
+}
+
+.modal {
+	background-color:rgba(0, 0, 0, 0.5);
+}
+
+.external-url {
+	font-size: 0.7em;
+	width: 80%;
+	position: relative;
+	word-wrap: break-word;
+}

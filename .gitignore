@@ -1,0 +1,8 @@
+node_modules
+.tmp
+.sass-cache
+npm-debug.log
+
+.idea
+*.iml
+.DS_Store
