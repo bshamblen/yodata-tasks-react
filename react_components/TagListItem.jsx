@@ -15,8 +15,7 @@ module.exports = React.createClass({
 		return (
 			<li>
 				<button type="button" className="btn btn-default btn-xs btn-task-tag" onClick={this.handleButtonClick}>
-					{this.props.tag._id}&nbsp;
-					<span className="badge">{this.props.tag.count}</span>
+					{this.props.tag._id} <span className="badge">{this.props.tag.count}</span>
 				</button>
 			</li>
 		);

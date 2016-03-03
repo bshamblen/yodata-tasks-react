@@ -32,10 +32,10 @@ module.exports = React.createClass({
 		return (
 			<nav>
 			  <ul className="pagination" style={{margin:'0px'}}>
-			  	<PagerLink pageNumber={firstPage} {...commonProps} title="first page" text="&laquo;" />
-			  	<PagerLink pageNumber={prevPage} {...commonProps} title="previous page" text="&#8249;" />
-			  	<PagerLink pageNumber={nextPage} {...commonProps} title="next page" text="&#8250;" />
-			  	<PagerLink pageNumber={lastPage} {...commonProps} title="last page" text="&raquo;" />
+			  	<PagerLink pageNumber={firstPage} {...commonProps} title="first page" text={String.fromCharCode(171)} />
+			  	<PagerLink pageNumber={prevPage} {...commonProps} title="previous page" text={String.fromCharCode(8249)} />
+			  	<PagerLink pageNumber={nextPage} {...commonProps} title="next page" text={String.fromCharCode(8250)} />
+			  	<PagerLink pageNumber={lastPage} {...commonProps} title="last page" text={String.fromCharCode(187)} />
 			  </ul>
 			</nav>
 		);

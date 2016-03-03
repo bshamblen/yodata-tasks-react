@@ -152,7 +152,8 @@ module.exports = React.createClass({
 
 		return (
 			<Modal show={this.props.show} onEntered={this.onEntered}>
-				<Modal.Header className="panel-heading" closeButton onHide={this.hideModal}>
+				<Modal.Header className="panel-heading" onHide={this.hideModal}>
+					<button type="button" className="close" onClick={this.hideModal}>x</button>
 					<Modal.Title>{modalTitle}</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
@@ -200,7 +201,7 @@ module.exports = React.createClass({
             	</Modal.Body>
 				<Modal.Footer>
 					<Button bsStyle="primary" className="pull-left" onClick={this.saveTask}>{this.props.task ? 'Update' : 'Save'}</Button>
-					<Button bsStyle="default" className="pull-left" onClick={this.showAttachmentsModal} show={hasTask}>View/Edit Attachments</Button>
+					{hasTask ? <Button bsStyle="default" className="pull-left" onClick={this.showAttachmentsModal}>View/Edit Attachments</Button> : ''}
 					<i className={spinnerClasses}></i>
 				</Modal.Footer>
 			</Modal>

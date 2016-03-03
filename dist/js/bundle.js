@@ -47812,8 +47812,7 @@ module.exports = React.createClass({
 		return (
 			React.createElement("li", null, 
 				React.createElement("button", {type: "button", className: "btn btn-default btn-xs btn-task-tag", onClick: this.handleButtonClick}, 
-					this.props.tag._id, " ", 
-					React.createElement("span", {className: "badge"}, this.props.tag.count)
+					this.props.tag._id, " ", React.createElement("span", {className: "badge"}, this.props.tag.count)
 				)
 			)
 		);
@@ -48053,7 +48052,8 @@ module.exports = React.createClass({
 
 		return (
 			React.createElement(Modal, {show: this.props.show, onEntered: this.onEntered}, 
-				React.createElement(Modal.Header, {closeButton: true, onHide: this.hideModal}, 
+				React.createElement(Modal.Header, {onHide: this.hideModal}, 
+					React.createElement("button", {type: "button", className: "close", onClick: this.hideModal}, "x"), 
 					React.createElement(Modal.Title, null, "Attachments")
 				), 
 				errorAlert, 
@@ -48227,7 +48227,8 @@ module.exports = React.createClass({
 		return (
 			React.createElement(Modal.Dialog, {show: this.state.show, dialogClassName: "text-left"}, 
 				React.createElement("div", {className: "modal-content panel-danger"}, 
-					React.createElement(Modal.Header, {className: "panel-heading", closeButton: true, onHide: this.hideModal}, 
+					React.createElement(Modal.Header, {className: "panel-heading", onHide: this.hideModal}, 
+						React.createElement("button", {type: "button", className: "close", onClick: this.hideModal}, "x"), 
 						React.createElement(Modal.Title, null, task.deleted ? 'Hard' : 'Soft', " Delete Task?")
 					), 
 					React.createElement(Modal.Body, null, 
@@ -48313,8 +48314,8 @@ module.exports = React.createClass({
 					React.createElement(Switch, {
 						onChange: this.handleDeleteToggle, 
 						onColor: "danger", size: "small", 
-						onText: " ", 
-						offText: " ", 
+						onText: String.fromCharCode(160), 
+						offText: String.fromCharCode(160), 
 						labelText: "trash", 
 						state: this.props.showDeleted}
 					)
@@ -48563,7 +48564,8 @@ module.exports = React.createClass({
 
 		return (
 			React.createElement(Modal, {show: this.props.show, onEntered: this.onEntered}, 
-				React.createElement(Modal.Header, {className: "panel-heading", closeButton: true, onHide: this.hideModal}, 
+				React.createElement(Modal.Header, {className: "panel-heading", onHide: this.hideModal}, 
+					React.createElement("button", {type: "button", className: "close", onClick: this.hideModal}, "x"), 
 					React.createElement(Modal.Title, null, modalTitle)
 				), 
 				React.createElement(Modal.Body, null, 
@@ -48611,7 +48613,7 @@ module.exports = React.createClass({
             	), 
 				React.createElement(Modal.Footer, null, 
 					React.createElement(Button, {bsStyle: "primary", className: "pull-left", onClick: this.saveTask}, this.props.task ? 'Update' : 'Save'), 
-					React.createElement(Button, {bsStyle: "default", className: "pull-left", onClick: this.showAttachmentsModal, show: hasTask}, "View/Edit Attachments"), 
+					hasTask ? React.createElement(Button, {bsStyle: "default", className: "pull-left", onClick: this.showAttachmentsModal}, "View/Edit Attachments") : '', 
 					React.createElement("i", {className: spinnerClasses})
 				)
 			)
@@ -48654,10 +48656,10 @@ module.exports = React.createClass({
 		return (
 			React.createElement("nav", null, 
 			  React.createElement("ul", {className: "pagination", style: {margin:'0px'}}, 
-			  	React.createElement(PagerLink, React.__spread({pageNumber: firstPage},  commonProps, {title: "first page", text: "«"})), 
-			  	React.createElement(PagerLink, React.__spread({pageNumber: prevPage},  commonProps, {title: "previous page", text: "‹"})), 
-			  	React.createElement(PagerLink, React.__spread({pageNumber: nextPage},  commonProps, {title: "next page", text: "›"})), 
-			  	React.createElement(PagerLink, React.__spread({pageNumber: lastPage},  commonProps, {title: "last page", text: "»"}))
+			  	React.createElement(PagerLink, React.__spread({pageNumber: firstPage},  commonProps, {title: "first page", text: String.fromCharCode(171)})), 
+			  	React.createElement(PagerLink, React.__spread({pageNumber: prevPage},  commonProps, {title: "previous page", text: String.fromCharCode(8249)})), 
+			  	React.createElement(PagerLink, React.__spread({pageNumber: nextPage},  commonProps, {title: "next page", text: String.fromCharCode(8250)})), 
+			  	React.createElement(PagerLink, React.__spread({pageNumber: lastPage},  commonProps, {title: "last page", text: String.fromCharCode(187)}))
 			  )
 			)
 		);

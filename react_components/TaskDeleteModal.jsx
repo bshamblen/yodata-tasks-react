@@ -53,7 +53,8 @@ module.exports = React.createClass({
 		return (
 			<Modal.Dialog show={this.state.show} dialogClassName="text-left">
 				<div className="modal-content panel-danger">
-					<Modal.Header className="panel-heading" closeButton onHide={this.hideModal}>
+					<Modal.Header className="panel-heading" onHide={this.hideModal}>
+						<button type="button" className="close" onClick={this.hideModal}>x</button>
 						<Modal.Title>{task.deleted ? 'Hard' : 'Soft' } Delete Task?</Modal.Title>
 					</Modal.Header>
 					<Modal.Body>

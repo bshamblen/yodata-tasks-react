@@ -25,8 +25,8 @@ module.exports = React.createClass({
 					<Switch
 						onChange={this.handleDeleteToggle}
 						onColor="danger" size="small"
-						onText="&nbsp;"
-						offText="&nbsp;"
+						onText={String.fromCharCode(160)}
+						offText={String.fromCharCode(160)}
 						labelText="trash"
 						state={this.props.showDeleted}
 					/>

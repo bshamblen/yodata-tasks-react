@@ -161,7 +161,8 @@ module.exports = React.createClass({
 
 		return (
 			<Modal show={this.props.show} onEntered={this.onEntered}>
-				<Modal.Header closeButton onHide={this.hideModal}>
+				<Modal.Header onHide={this.hideModal}>
+					<button type="button" className="close" onClick={this.hideModal}>x</button>
 					<Modal.Title>Attachments</Modal.Title>
 				</Modal.Header>
 				{errorAlert}
