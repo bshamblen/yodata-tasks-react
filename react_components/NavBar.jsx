@@ -26,7 +26,7 @@ module.exports = React.createClass({
 					</div>
 					<div id="yd-navbar-collapse-secure" className="collapse navbar-collapse">
 						<ul className="nav navbar-nav navbar-right">
-							<li><YodataLoginButton clientId={this.props.clientId} scopes={this.props.scopes} onUserStateChange={this.handleUserStateChange}/></li>
+							<li style={{paddingLeft:'15px'}}><YodataLoginButton clientId={this.props.clientId} scopes={this.props.scopes} onUserStateChange={this.handleUserStateChange}/></li>
 						</ul>
 					</div>
 				</div>

@@ -47741,7 +47741,7 @@ module.exports = React.createClass({
 					), 
 					React.createElement("div", {id: "yd-navbar-collapse-secure", className: "collapse navbar-collapse"}, 
 						React.createElement("ul", {className: "nav navbar-nav navbar-right"}, 
-							React.createElement("li", null, React.createElement(YodataLoginButton, {clientId: this.props.clientId, scopes: this.props.scopes, onUserStateChange: this.handleUserStateChange}))
+							React.createElement("li", {style: {paddingLeft:'15px'}}, React.createElement(YodataLoginButton, {clientId: this.props.clientId, scopes: this.props.scopes, onUserStateChange: this.handleUserStateChange}))
 						)
 					)
 				)
