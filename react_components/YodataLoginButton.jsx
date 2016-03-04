@@ -1,7 +1,5 @@
-/** @jsx React.DOM */
-
-var React = require('react');
-var globals = require('./globals.jsx');
+import React from 'react';
+import globals from './globals.jsx';
 
 module.exports = React.createClass({
 	displayName: 'YodataLoginButton',
@@ -12,12 +10,12 @@ module.exports = React.createClass({
 	},
 	getQueryParameterByName(name) {
 		name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-		var regex = new RegExp('[\\?&]' + name + '=([^&#]*)'),
+		let regex = new RegExp('[\\?&]' + name + '=([^&#]*)'),
 		results = regex.exec(location.search);
 		return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
 	},
 	saveAuthCode() {
-		var authCode = this.getQueryParameterByName('code');
+		let authCode = this.getQueryParameterByName('code');
 
 		if (authCode) {
 			localStorage.setItem(globals.YD_AUTH_CODE, authCode);
@@ -25,10 +23,9 @@ module.exports = React.createClass({
 		}
 	},
 	requestAuthToken() {
-		var self = this;
-		var redurectUri = this.removeQueryStringParamFromURI(window.location.href, 'code');
+		let redurectUri = this.removeQueryStringParamFromURI(window.location.href, 'code');
 
-		var params = {
+		let params = {
 			'client_id': this.state.clientId,
 			'code': localStorage.getItem(globals.YD_AUTH_CODE),
 			'grant_type': 'authorization_code',
@@ -54,9 +51,9 @@ module.exports = React.createClass({
 		if (uri.indexOf('?') <= 0)
 			return uri;
 
-		var queryString = uri.substring(uri.indexOf('?') + 1);
-		var root = uri.substring(0, uri.indexOf('?'));
-		var params = {}, oldQueries, newQueries = [], temp, i, l;
+		let queryString = uri.substring(uri.indexOf('?') + 1);
+		let root = uri.substring(0, uri.indexOf('?'));
+		let params = {}, oldQueries, newQueries = [], temp, i, l;
 
 		// Split into key/value pairs
 		oldQueries = queryString.split('&');
@@ -76,7 +73,7 @@ module.exports = React.createClass({
 			localStorage.setItem(globals.YD_AUTH_TOKEN, this.props.authToken);
 		}
 
-		var loggedIn = localStorage.getItem(globals.YD_AUTH_TOKEN) ? true : false;
+		let loggedIn = localStorage.getItem(globals.YD_AUTH_TOKEN) ? true : false;
 		
 		return {
 			clientId: this.props.clientId,
@@ -86,13 +83,11 @@ module.exports = React.createClass({
 	},
 	handleClick() {
 		if (this.state.loggedIn) {
-			var self = this;
-
 			localStorage.removeItem(globals.YD_AUTH_TOKEN);
 			localStorage.removeItem(globals.YD_AUTH_CODE);
 
-			this.setState({loggedIn: false}, function() {
-				self.props.onUserStateChange(false);
+			this.setState({loggedIn: false}, () => {
+				this.props.onUserStateChange(false);
 			});
 			
 		} else {
@@ -105,7 +100,7 @@ module.exports = React.createClass({
 	render() {
 		this.saveAuthCode();
 
-		var buttonStyle = {
+		let buttonStyle = {
 			border: 'solid 1px silver',
 			fontSize: '9pt',
 			borderRadius: 6,
@@ -116,7 +111,7 @@ module.exports = React.createClass({
 			margin: '12px 0px 12px 0px'
 		}
 
-		var logoStyle = {
+		let logoStyle = {
 			width: 14,
 			height: 14,
 			marginRight: 6

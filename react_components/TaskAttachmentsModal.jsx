@@ -1,14 +1,8 @@
-/** @jsx React.DOM */
-
-var React = require('react');
-var Modal = require('react-bootstrap').Modal;
-var Button = require('react-bootstrap').Button;
-var ListGroup = require('react-bootstrap').ListGroup;
-var ListGroupItem = require('react-bootstrap').ListGroupItem;
-var Alert = require('react-bootstrap').Alert;
-var FileListItem = require('./FileListItem.jsx');
-var dataChangeEmitter = require('./DataChangeEmitter.js');
-var LoadingSpinner = require('./LoadingSpinner.jsx');
+import React from 'react';
+import {Modal, Button, ListGroup, ListGroupItem, Alert} from 'react-bootstrap';
+import FileListItem from './FileListItem.jsx';
+import dataChangeEmitter from './DataChangeEmitter.js';
+import LoadingSpinner from './LoadingSpinner.jsx';
 
 module.exports = React.createClass({
 	displayName: 'TaskAttachmentsModal',
@@ -35,63 +29,59 @@ module.exports = React.createClass({
 		$('.fileInput').click();
 	},
 	reloadFileList() {
-		var self = this;
-		self.setState({loading: true});
+		this.setState({loading: true});
 
-		var options = {
+		let options = {
 			fields: 'files',
 			populate: {
 				path: 'files'
 			} 
 		};
 
-		self.props.api.findById('yodata.task', self.props.task.objectId, options, function(err, results) {
+		this.props.api.findById('yodata.task', this.props.task.objectId, options, (err, results) => {
 			if (err) {
-				self.setState({error: err, loading: false});
+				this.setState({error: err, loading: false});
 			} else {
-				self.setState({files: results.files, loading: false});
+				this.setState({files: results.files, loading: false});
 			}
 		});
 	},
 	handleFileDownload(file) {
-		var self = this;
-
 		if (file.isPublic && file.publicFileUrl) {
 			document.location.href = file.publicFileUrl;
 		} else {
-			self.setState({error: null, loading: true});
+			this.setState({error: null, loading: true});
 
-			this.props.api.generateDownloadUrlForPrivateFileById(file.objectId, function(err, url) {
+			this.props.api.generateDownloadUrlForPrivateFileById(file.objectId, (err, url) => {
 				if (err) {
-					self.setState({error: err, loading: false});
+					this.setState({error: err, loading: false});
 				} else {
 					window.location.href = url;
-					self.setState({loading: false});
+					this.setState({loading: false});
 				}
 			});
 		}
 	},
 	handleFileDelete(file) {
-		var self = this;
-		var task = self.props.task;
-		var updateStatement = {
+		let task = this.props.task;
+		let updateStatement = {
 			$pull: {
 				files: file.objectId
 			}
 		}
 
-		self.setState({saving: true});
+		this.setState({saving: true});
 
-		self.props.api.update('yodata.task', task.objectId, updateStatement , function(err, results) {
+		this.props.api.update('yodata.task', task.objectId, updateStatement , (err, results) => {
 			if (err) {
-				self.setState({error: err, saving: false});
+				this.setState({error: err, saving: false});
 			} else {
-				self.props.api.remove('files', file.objectId, function(err, results) {
+				this.props.api.remove('files', file.objectId, (err, results) => {
 					if (err) {
-						self.setState({error: err, saving: false});
+						this.setState({error: err, saving: false});
 					} else {
-						self.setState({saving: false});
-						self.reloadFileList();
+						this.setState({saving: false});
+						this.reloadFileList();
 						dataChangeEmitter.emit('event');
 					}
 				});
@@ -99,27 +89,26 @@ module.exports = React.createClass({
 		});
 	},
 	onEntered() {
-		var self = this;
-		var task = self.props.task;
-		self.reloadFileList();
+		let task = this.props.task;
+		this.reloadFileList();
 
-		$('.fileInput').change(function(event) {
-			self.setState({saving: true});
-			var file = event.target.files[0];
-			var formData = new FormData();
+		$('.fileInput').change((event) => {
+			this.setState({saving: true});
+			let file = event.target.files[0];
+			let formData = new FormData();
 			formData.append(file.name, file);
 			formData.append('isPublic', $("#isPublic").val());
 
-		    self.props.api.uploadFile(formData, function(err, result) {
+		    this.props.api.uploadFile(formData, (err, result) => {
 		    	if (err) {
-		    		self.setState({error: err, saving: false});
+		    		this.setState({error: err, saving: false});
 		    	} else {
-					self.props.api.update('yodata.task', task.objectId, {$push: {files: result.objectId}}, function(err, result) {
+					this.props.api.update('yodata.task', task.objectId, {$push: {files: result.objectId}}, (err, result) => {
 						if (err) {
-							self.setState({error: err, saving: false});
+							this.setState({error: err, saving: false});
 						} else {
-							self.setState({saving: false});
-							self.reloadFileList();
+							this.setState({saving: false});
+							this.reloadFileList();
 							dataChangeEmitter.emit('event');
 						}
 					});
@@ -136,17 +125,15 @@ module.exports = React.createClass({
 		});
 	},
 	render() {
-		var self = this;
-
-		var fileList = this.state.files.map(function(file) {
+		let fileList = this.state.files.map((file) => {
 			return (
 				<FileListItem
 					key={file.objectId}
-					api={self.props.api}
-					task={self.props.task}
+					api={this.props.api}
+					task={this.props.task}
 					file={file}
-					onDelete={self.handleFileDelete}
-					onDownload={self.handleFileDownload}
+					onDelete={this.handleFileDelete}
+					onDownload={this.handleFileDownload}
 				/>
 			);
 		});

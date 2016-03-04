@@ -1,16 +1,14 @@
-/** @jsx React.DOM */
-
-var React = require('react');
-var globals = require('./globals.jsx');
-var NavBar = require('./NavBar.jsx');
-var UserAvatar = require('./UserAvatar.jsx');
-var FilterableTaskList = require('./FilterableTaskList.jsx');
-var dataChangeEmitter = require('./DataChangeEmitter.js');
+import React from 'react';
+import globals from './globals.jsx';
+import NavBar from './NavBar.jsx';
+import UserAvatar from './UserAvatar.jsx';
+import FilterableTaskList from './FilterableTaskList.jsx';
+import dataChangeEmitter from './DataChangeEmitter.js';
 
 module.exports = React.createClass({
 	displayName: 'YodataTasks',
 	getInitialState() {
-		var loggedIn = localStorage.getItem(globals.YD_AUTH_TOKEN) ? true : false;
+		let loggedIn = localStorage.getItem(globals.YD_AUTH_TOKEN) ? true : false;
 
 		return {
 			profile: null,
@@ -19,13 +17,11 @@ module.exports = React.createClass({
 	},
 	componentDidMount() {
 		if (this.state.api) {
-			var self = this;
-
-			this.state.api.userProfile(function(err, results) {
+			this.state.api.userProfile((err, results) => {
 				if (err) {
 					dataChangeEmitter.emit('error', err);
 				} else if (results) {
-					self.setState({profile: results.profile});
+					this.setState({profile: results.profile});
 				}
 			});
 		}

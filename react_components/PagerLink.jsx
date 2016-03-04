@@ -1,6 +1,4 @@
-/** @jsx React.DOM */
-
-var React = require('react');
+import React from 'react';
 
 module.exports = React.createClass({
 	displayName: 'PagerLink',
@@ -20,7 +18,7 @@ module.exports = React.createClass({
 			return true;
 		}
 
-		var offset = this.props.currentOffset;
+		let offset = this.props.currentOffset;
 
 		if ((offset / 10) + 1 === pageNumber) {
 			return true;
@@ -29,7 +27,7 @@ module.exports = React.createClass({
 		return false;
 	},
 	render() {
-		var disabled = this.isDisabled(this.props.pageNumber);
+		let disabled = this.isDisabled(this.props.pageNumber);
 
 		return (
 			<li className={disabled ? 'disabled': ''}>

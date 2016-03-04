@@ -1,6 +1,4 @@
-/** @jsx React.DOM */
-
-var React = require('react');
+import React from 'react';
 
 module.exports = React.createClass({
 	displayName: 'UserAvatar',
@@ -8,7 +6,7 @@ module.exports = React.createClass({
 		profile: React.PropTypes.object
 	},
 	render() {
-		var profile = this.props.profile;
+		let profile = this.props.profile;
 
 		if (profile && profile.avatarImageUrl) {
 			return (

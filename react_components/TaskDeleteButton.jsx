@@ -1,8 +1,6 @@
-/** @jsx React.DOM */
-
-var React = require('react');
-var Button = require('react-bootstrap').Button;
-var TaskDeleteModal = require('./TaskDeleteModal.jsx');
+import React from 'react';
+import {Button} from 'react-bootstrap';
+import TaskDeleteModal from './TaskDeleteModal.jsx';
 
 module.exports = React.createClass({
 	displayName: 'TaskDeleteButton',

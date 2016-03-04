@@ -1,7 +1,5 @@
-/** @jsx React.DOM */
-
-var React = require('react');
-var TaskListItem = require('./TaskListItem.jsx');
+import React from 'react';
+import TaskListItem from './TaskListItem.jsx';
 
 module.exports = React.createClass({
 	displayName: 'TaskList',
@@ -18,15 +16,14 @@ module.exports = React.createClass({
 			return null;
 		}
 
-		var self = this;
-		var taskList = this.props.tasks.map(function(task) {
+		let taskList = this.props.tasks.map((task) => {
 			return (
 				<TaskListItem
 					key={task.objectId}
 					task={task}
-					showDeleted={self.props.showDeleted}
-					api={self.props.api}
-					onRowClick={self.handleRowClick}
+					showDeleted={this.props.showDeleted}
+					api={this.props.api}
+					onRowClick={this.handleRowClick}
 				/>
 			);
 		});

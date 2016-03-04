@@ -1,8 +1,6 @@
-/** @jsx React.DOM */
-
-var React = require('react');
-var ReactDOM = require('react-dom');
-var YodataTasks = require('./YodataTasks.jsx');
+import React from 'react';
+import ReactDOM from 'react-dom';
+import YodataTasks from './YodataTasks.jsx';
 
 ReactDOM.render(
 	<YodataTasks />,

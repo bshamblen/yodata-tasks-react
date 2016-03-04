@@ -1,9 +1,7 @@
-/** @jsx React.DOM */
-
-var React = require('react');
-var TaskDeleteButton = require('./TaskDeleteButton.jsx');
-var TaskCompleteButton = require('./TaskCompleteButton.jsx');
-var utils = require('./utils.jsx');
+import React from 'react';
+import TaskDeleteButton from './TaskDeleteButton.jsx';
+import TaskCompleteButton from './TaskCompleteButton.jsx';
+import utils from './utils.jsx';
 
 module.exports = React.createClass({
 	displayName: 'TaskListItem',
@@ -17,13 +15,13 @@ module.exports = React.createClass({
 		this.props.onRowClick(this.props.task);
 	},
 	render() {
-		var api = this.props.api;
-		var task = this.props.task;
-		var dueDate = (task.dueDate && !task.completed ? new Date(task.dueDate) : null);
-		var now = new Date();
-		var pastDue = (dueDate && dueDate < now);
-		var headingClass = 'list-group-item-heading'
-		var taskPriority, hasFiles, dueDateDiv, taskNotes; 
+		let api = this.props.api;
+		let task = this.props.task;
+		let dueDate = (task.dueDate && !task.completed ? new Date(task.dueDate) : null);
+		let now = new Date();
+		let pastDue = (dueDate && dueDate < now);
+		let headingClass = 'list-group-item-heading'
+		let taskPriority, hasFiles, dueDateDiv, taskNotes; 
 
 		if (task.completed) {
 			headingClass += ' task-muted';

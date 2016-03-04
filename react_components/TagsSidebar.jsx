@@ -1,8 +1,6 @@
-/** @jsx React.DOM */
-
-var React = require('react');
-var TagListItem = require('./TagListItem.jsx');
-var Panel = require('react-bootstrap').Panel;
+import React from 'react';
+import TagListItem from './TagListItem.jsx';
+import {Panel} from 'react-bootstrap';
 
 module.exports = React.createClass({
 	displayName: 'TagsSidebar',
@@ -26,12 +24,11 @@ module.exports = React.createClass({
 	},
 	render() {
 		if (this.props.tags && this.props.tags.length > 0) {
-			var self = this;
-			var tagList = this.props.tags.map(function(tag) {
-				return <TagListItem key={tag._id} tag={tag} onTagSelect={self.handleTagSelect}/>
+			let tagList = this.props.tags.map((tag) => {
+				return <TagListItem key={tag._id} tag={tag} onTagSelect={this.handleTagSelect}/>
 			});
 
-			var selectedTagHeader;
+			let selectedTagHeader;
 
 			if (this.props.selectedTag) {
 				selectedTagHeader = (

@@ -1,19 +1,19 @@
-var _ = require('underscore');
-require('./underscore_mixins.jsx');
+import _ from 'underscore';
+import './underscore_mixins.jsx';
 
 module.exports = {
 	formatDateString(value) {
 		if (value) {
-			var date = new Date(value);
+			let date = new Date(value);
 			return (date.getMonth() + 1) + '/' + date.getDate() + '/' +  date.getFullYear()
 		}
 
 		return '';
 	},
 	buildMongoDbUpdate(original, updated) {
-		var modifier = {};
+		let modifier = {};
 
-		function addModifier(op, key, val) {
+		let addModifier = (op, key, val) => {
 			if (_.isUndefined(modifier[op])) {
 				modifier[op] = {};
 			}
@@ -21,16 +21,16 @@ module.exports = {
 			modifier[op][key] = val;
 		}
 
-		_.keys(updated).forEach(function(key) {
-			var newVal = updated[key];
-			var oldVal = original[key];
+		_.keys(updated).forEach((key) => {
+			let newVal = updated[key];
+			let oldVal = original[key];
 
 			if (!_.isEqual(newVal, oldVal)) {
 				addModifier('$set', key, newVal);
 			}
 		});
 
-		_.keys(original).forEach(function(key) {
+		_.keys(original).forEach((key) => {
 			if (!_.property(key)(updated)) {
 				if (!_.deepIsEmpty(original[key])) {
 					addModifier('$unset', key, true);

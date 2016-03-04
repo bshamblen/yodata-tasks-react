@@ -1,14 +1,10 @@
-/** @jsx React.DOM */
-
-var React = require('react');
-var Modal = require('react-bootstrap').Modal;
-var Button = require('react-bootstrap').Button;
-var Alert = require('react-bootstrap').Alert;
-var LoadingSpinner = require('./LoadingSpinner.jsx');
-var _ = require('underscore');
-require('./underscore_mixins.jsx');
-var utils = require('./utils.jsx');
-var dataChangeEmitter = require('./DataChangeEmitter.js');
+import React from 'react';
+import {Modal, Button, Alert} from 'react-bootstrap';
+import LoadingSpinner from './LoadingSpinner.jsx';
+import _ from 'underscore';
+import './underscore_mixins.jsx';
+import utils from './utils.jsx';
+import dataChangeEmitter from './DataChangeEmitter.js';
 
 module.exports = React.createClass({
 	displayName: 'TaskModal',
@@ -34,14 +30,14 @@ module.exports = React.createClass({
 		$('textarea').siblings('.error-message').text('');
 	},
 	buildDocFromForm() {
-		var doc = {};
+		let doc = {};
 		doc.title = $('#title').val();
 		doc.priority = $('#priority').val();
 		doc.dueDate = $('#dueDate').val();
 		doc.notes = $('#notes').val();
 		doc.completed = $('#completed').is(':checked');
 		doc.tags = $('#tags').tagsinput('items');
-		var completedDate = $('#completedDate').val();
+		let completedDate = $('#completedDate').val();
 		doc.completedDate = (doc.completed ? (completedDate.length > 0 ? completedDate : new Date()) : null);
 
 		return _.compactObject(doc);
@@ -53,61 +49,56 @@ module.exports = React.createClass({
 		this.setState({error: null});
 	},
 	saveTask() {
-		var self = this;
+		this.setState({saving: true}, () => {
+			this.clearValidationErrors();
+			let doc = this.buildDocFromForm();
 
-		self.setState({saving: true}, function() {
-			self.clearValidationErrors();
-			var doc = self.buildDocFromForm();
-
-			if (self.props.task) {
-				self.updateTask(doc);
+			if (this.props.task) {
+				this.updateTask(doc);
 			} else {
 				doc.deleted = false;
-				self.insertTask(doc);
+				this.insertTask(doc);
 			}
 		});
 	},
 	displayValidationErrors(errors) {
-		var keys = Object.keys(errors);
+		let keys = Object.keys(errors);
 
-		for (var index = 0; index < keys.length; index++) {
-			var key = keys[index];
+		for (let index = 0; index < keys.length; index++) {
+			let key = keys[index];
 			$('#' + key).parent().addClass('has-error');
 			$('#' + key).siblings('.error-message').text(errors[key].message);
 		}
 	},
 	insertTask(task) {
-		var self = this;
-
-		this.props.api.insert('yodata.task', task, function(err, result) {
-			self.setState({saving: false});
+		this.props.api.insert('yodata.task', task, (err, result) => {
+			this.setState({saving: false});
 
 			if (err) {
 				if (err.error && err.error.name === 'ValidationError') {
-					self.displayValidationErrors(err.error.errors);
+					this.displayValidationErrors(err.error.errors);
 				} else {
-					self.setState({error: err});
+					this.setState({error: err});
 				}
 			} else {
 				dataChangeEmitter.emit('event');
-				self.props.onClose();
+				this.props.onClose();
 			}
 		});
 	},
 	updateTask(updatedTask) {
-		var self = this;
-		var updateStatment = utils.buildMongoDbUpdate(_.omit(this.props.task, 'objectId', 'createdAt', 'modifiedAt', 'deleted', 'files'), updatedTask);
+		let updateStatment = utils.buildMongoDbUpdate(_.omit(this.props.task, 'objectId', 'createdAt', 'modifiedAt', 'deleted', 'files'), updatedTask);
 
-		this.props.api.update('yodata.task', this.props.task.objectId, updateStatment, function(err, result) {
+		this.props.api.update('yodata.task', this.props.task.objectId, updateStatment, (err, result) => {
 			if (err) {
 				if (err.error && err.error.name === 'ValidationError') {
-					self.displayValidationErrors(err.error.errors);
+					this.displayValidationErrors(err.error.errors);
 				} else {
-					self.setState({error: err});
+					this.setState({error: err});
 				}
 			} else {
 				dataChangeEmitter.emit('event');
-				self.props.onClose();
+				this.props.onClose();
 			}
 		});
 	},
@@ -116,7 +107,7 @@ module.exports = React.createClass({
 
 		if (this.props.show) {
 			$('#tags').tagsinput();
-			$('#tags').on('beforeItemAdd', function(event) {
+			$('#tags').on('beforeItemAdd', (event) => {
 		  		event.item = event.item.toLowerCase();
 		  		return event;
 			});
@@ -143,15 +134,15 @@ module.exports = React.createClass({
 		}
 	},
 	render() {
-		var hasTask = this.props.task ? true : false;
-		var modalTitle = hasTask? 'Edit Task' : 'Insert Task';
-		var errorAlert = '';
+		let hasTask = this.props.task ? true : false;
+		let modalTitle = hasTask? 'Edit Task' : 'Insert Task';
+		let errorAlert = '';
 
 		if (this.state.error) {
 			errorAlert = <Alert bsStyle="warning" onDismiss={this.clearError}><p>{this.state.error.error.name}: {this.state.error.error.message}</p></Alert>;
 		}
 
-		var commonProps = {autoComplete: 'off', autoCorrect: 'off', spellCheck: 'false'};
+		let commonProps = {autoComplete: 'off', autoCorrect: 'off', spellCheck: 'false'};
 
 		return (
 			<Modal show={this.props.show} onEntered={this.onEntered}>

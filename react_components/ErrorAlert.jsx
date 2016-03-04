@@ -1,8 +1,6 @@
-/** @jsx React.DOM */
-
-var React = require('react');
-var Alert = require('react-bootstrap').Alert;
-var dataChangeEmitter = require('./DataChangeEmitter.js');
+import React from 'react';
+import {Alert} from 'react-bootstrap';
+import dataChangeEmitter from './DataChangeEmitter.js';
 
 module.exports = React.createClass({
 	displayName: 'ErrorAlert',
@@ -13,14 +11,12 @@ module.exports = React.createClass({
 		}
 	},
 	componentDidMount() {
-		var self = this;
-
-		this.emitter = dataChangeEmitter.addListener('error', function(err) {
-			var timeout = setTimeout(function() {
-				self.setState({error: null});
+		this.emitter = dataChangeEmitter.addListener('error', (err) => {
+			let timeout = setTimeout(function() {
+				this.setState({error: null});
 			}, 8000);
 
-			self.setState({error: err, timeout: timeout});
+			this.setState({error: err, timeout: timeout});
 		});
 	},
 	componentWillUnmount() {

@@ -1,8 +1,6 @@
-/** @jsx React.DOM */
-
-var React = require('react');
-var dataChangeEmitter = require('./DataChangeEmitter.js');
-var Button = require('react-bootstrap').Button
+import React from 'react';
+import dataChangeEmitter from './DataChangeEmitter.js';
+import {Button} from 'react-bootstrap';
 
 module.exports = React.createClass({
 	displayName: 'TaskCompleteButton',
@@ -11,10 +9,10 @@ module.exports = React.createClass({
 		task: React.PropTypes.object.isRequired
 	},
 	handleButtonClick() {
-		var task = this.props.task;
+		let task = this.props.task;
 
 		if (task.deleted) {
-			var query = {$set: {deleted: false}};
+			let query = {$set: {deleted: false}};
 
 			this.props.api.update('yodata.task', task.objectId, query, updateCallback);
 		} else {
@@ -38,7 +36,7 @@ module.exports = React.createClass({
 	}
 });
 
-function updateCallback(err, results) {
+let updateCallback = (err, results) => {
 	if (err) {
 		dataChangeEmitter.emit('error', err);
 	} else {

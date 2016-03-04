@@ -1,10 +1,7 @@
-/** @jsx React.DOM */
-
-var React = require('react');
-var Modal = require('react-bootstrap').Modal;
-var Button = require('react-bootstrap').Button;
-var dataChangeEmitter = require('./DataChangeEmitter.js');
-var LoadingSpinner = require('./LoadingSpinner.jsx');
+import React from 'react';
+import {Modal, Button} from 'react-bootstrap';
+import dataChangeEmitter from './DataChangeEmitter.js';
+import LoadingSpinner from './LoadingSpinner.jsx';
 
 module.exports = React.createClass({
 	displayName: 'TaskDeleteModal',
@@ -22,11 +19,11 @@ module.exports = React.createClass({
 		this.props.showModal(false);
 	},
 	softDeleteTask() {
-		var query = {$set: {deleted: true}};
+		let query = {$set: {deleted: true}};
 		this.props.api.update('yodata.task', this.props.task.objectId, query, apiCallback);
 	},
 	handleButtonClick() {
-		var task = this.props.task;
+		let task = this.props.task;
 
 		if (task.deleted) {
 			this.props.api.remove('yodata.task', task.objectId, apiCallback);
@@ -35,7 +32,7 @@ module.exports = React.createClass({
 		}
 	},
 	render() {
-		var task = this.props.task;
+		let task = this.props.task;
 
 		return (
 			<Modal.Dialog show={this.state.show} dialogClassName="text-left">
@@ -59,7 +56,7 @@ module.exports = React.createClass({
 	}
 });
 
-function apiCallback(err, results) {
+let apiCallback = (err, results) => {
 	if (err) {
 		dataChangeEmitter.emit('error', err);
 	} else {

@@ -1,7 +1,5 @@
-/** @jsx React.DOM */
-
-var React = require('react');
-var PagerLink = require('./PagerLink.jsx');
+import React from 'react';
+import PagerLink from './PagerLink.jsx';
 
 module.exports = React.createClass({
 	displayName: 'TasksPager',
@@ -18,13 +16,13 @@ module.exports = React.createClass({
 			return null;
 		}
 
-		var firstPage = this.props.meta['first-page'];
-		var	prevPage = this.props.meta['prev-page'];
-		var nextPage = this.props.meta['next-page'];
-		var lastPage = this.props.meta['last-page'];
-		var currentOffset = this.props.currentOffset;
+		let firstPage = this.props.meta['first-page'];
+		let	prevPage = this.props.meta['prev-page'];
+		let nextPage = this.props.meta['next-page'];
+		let lastPage = this.props.meta['last-page'];
+		let currentOffset = this.props.currentOffset;
 
-		var commonProps = {
+		let commonProps = {
 			currentOffset: currentOffset,
 			onPagerClick: this.handlePagerClick
 		}

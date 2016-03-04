@@ -1,8 +1,5 @@
-/** @jsx React.DOM */
-
-var React = require('react');
-var Button = require('react-bootstrap').Button;
-var ListGroupItem = require('react-bootstrap').ListGroupItem;
+import React from 'react';
+import {Button, ListGroupItem} from 'react-bootstrap';
 
 module.exports = React.createClass({
 	displayName: 'FileListItem',
@@ -21,8 +18,8 @@ module.exports = React.createClass({
 		}
 	},
 	render() {
-		var file = this.props.file;
-		var url = '';
+		let file = this.props.file;
+		let url;
 
 		if (file.isPublic && file.publicFileUrl) {
 			url = (

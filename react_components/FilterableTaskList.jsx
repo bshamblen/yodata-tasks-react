@@ -1,14 +1,12 @@
-/** @jsx React.DOM */
-
-var React = require('react');
-var TaskList = require('./TaskList.jsx');
-var TaskModal = require('./TaskModal.jsx');
-var ErrorAlert = require('./ErrorAlert.jsx');
-var TagsSidebar = require('./TagsSidebar.jsx');
-var LoadingSpinner = require('./LoadingSpinner.jsx');
-var TaskListFooter = require('./TaskListFooter.jsx');
-var dataChangeEmitter = require('./DataChangeEmitter.js');
-var TaskAttachmentsModal = require('./TaskAttachmentsModal.jsx');
+import React from 'react';
+import TaskList from './TaskList.jsx';
+import TaskModal from './TaskModal.jsx';
+import ErrorAlert from './ErrorAlert.jsx';
+import TagsSidebar from './TagsSidebar.jsx';
+import LoadingSpinner from './LoadingSpinner.jsx';
+import TaskListFooter from './TaskListFooter.jsx';
+import dataChangeEmitter from './DataChangeEmitter.js';
+import TaskAttachmentsModal from './TaskAttachmentsModal.jsx';
 
 module.exports = React.createClass({
 	displayName: 'FilterableTaskList',
@@ -32,48 +30,42 @@ module.exports = React.createClass({
 		}
 	},
 	handleTagSelect(tag) {
-		var self = this;
-
-		this.setState({currentOffset: 0, selectedTag: tag}, function() {
-			self.reloadTasks();
+		this.setState({currentOffset: 0, selectedTag: tag}, () => {
+			this.reloadTasks();
 		});
 	},
 	handleStateChange(obj) {
-		var self = this;
-
-		this.setState(obj, function() {
-			self.reloadTasks();
+		this.setState(obj, () => {
+			this.reloadTasks();
 		});
 	},
 	reloadTags() {
-		var self = this;
 		this.setState({loadingTags: true});
 
-		var options = {
+		let options = {
 			pipeline: [{$unwind: '$tags'}, { $group: { _id: '$tags', count: { $sum: 1 } }}, { $sort: {_id: 1}}]
 		}
 
-		this.props.api.aggregate('yodata.task', options, function(err, results) {
+		this.props.api.aggregate('yodata.task', options, (err, results) => {
 			if (err) {
 				dataChangeEmitter.emit('error', err);
 			} else if (results && results.length > 0) {
-				self.setState({tags: results});
+				this.setState({tags: results});
 			}
 
-			self.setState({loadingTags: false});
+			this.setState({loadingTags: false});
 		});
 	},
 	reloadTasks() {
-		var self = this;
-		self.setState({loadingTasks: true});
+		this.setState({loadingTasks: true});
 
-		var options = {
+		let options = {
 			limit: 10,
 			sort: {createdAt: -1},
 			offset: this.state.currentOffset
 		}
 
-		var criteria = {deleted: this.state.showDeleted};
+		let criteria = {deleted: this.state.showDeleted};
 
 		if (this.state.selectedTag) {
 			criteria['tags'] = this.state.selectedTag;
@@ -81,26 +73,24 @@ module.exports = React.createClass({
 
 		options['criteria'] = criteria;
 	
-		this.props.api.find('yodata.task', options, function(err, results) {
+		this.props.api.find('yodata.task', options, (err, results) => {
 			if (err) {
 				dataChangeEmitter.emit('error', err);
 			} else if (results && results.data && results.data.length > 0) {
-				self.setState({tasks: results.data, meta: results.meta});
+				this.setState({tasks: results.data, meta: results.meta});
 			} else {
-				self.setState({tasks: [], meta: null})
+				this.setState({tasks: [], meta: null})
 			}
 
-			self.setState({loadingTasks: false});
+			this.setState({loadingTasks: false});
 		});
 	},
 	componentDidMount() {
-		var self = this;
-
 		this.reloadTags();
 		this.reloadTasks();
 
-		this.emitter = dataChangeEmitter.addListener('event', function() {
-			self.reloadTasks();
+		this.emitter = dataChangeEmitter.addListener('event', () => {
+			this.reloadTasks();
 		});
 	},
 	componentWillUnmount() {

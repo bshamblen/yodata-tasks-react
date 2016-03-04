@@ -1,7 +1,5 @@
-/** @jsx React.DOM */
-
-var React = require('react');
-var YodataLoginButton = require('./YodataLoginButton.jsx');
+import React from 'react';
+import YodataLoginButton from './YodataLoginButton.jsx';
 
 module.exports = React.createClass({
 	displayName: 'NavBar',

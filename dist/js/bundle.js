@@ -47418,62 +47418,87 @@ module.exports = warning;
 
 }).call(this,require('_process'))
 },{"_process":143}],413:[function(require,module,exports){
-/** @jsx React.DOM */
+'use strict';
 
-var React = require('react');
-var ReactDOM = require('react-dom');
-var YodataTasks = require('./YodataTasks.jsx');
+var _react = require('react');
 
-ReactDOM.render(
-	React.createElement(YodataTasks, null),
-	document.getElementById('site-wrapper')
-);
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = require('react-dom');
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+var _YodataTasks = require('./YodataTasks.jsx');
+
+var _YodataTasks2 = _interopRequireDefault(_YodataTasks);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+_reactDom2.default.render(_react2.default.createElement(_YodataTasks2.default, null), document.getElementById('site-wrapper'));
+
 },{"./YodataTasks.jsx":434,"react":407,"react-dom":227}],414:[function(require,module,exports){
-var EventEmitter = require('fbemitter').EventEmitter;
-var emitter = new EventEmitter();
+'use strict';
+
+var _fbemitter = require('fbemitter');
+
+var emitter = new _fbemitter.EventEmitter();
 module.exports = emitter;
 
 },{"fbemitter":64}],415:[function(require,module,exports){
-/** @jsx React.DOM */
+'use strict';
 
-var React = require('react');
-var Alert = require('react-bootstrap').Alert;
-var dataChangeEmitter = require('./DataChangeEmitter.js');
+var _react = require('react');
 
-module.exports = React.createClass({
+var _react2 = _interopRequireDefault(_react);
+
+var _reactBootstrap = require('react-bootstrap');
+
+var _DataChangeEmitter = require('./DataChangeEmitter.js');
+
+var _DataChangeEmitter2 = _interopRequireDefault(_DataChangeEmitter);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+module.exports = _react2.default.createClass({
 	displayName: 'ErrorAlert',
-	getInitialState() {
+	getInitialState: function getInitialState() {
 		return {
 			error: null,
-			timeout: null,
-		}
+			timeout: null
+		};
 	},
-	componentDidMount() {
-		var self = this;
+	componentDidMount: function componentDidMount() {
+		var _this = this;
 
-		this.emitter = dataChangeEmitter.addListener('error', function(err) {
-			var timeout = setTimeout(function() {
-				self.setState({error: null});
+		this.emitter = _DataChangeEmitter2.default.addListener('error', function (err) {
+			var timeout = setTimeout(function () {
+				this.setState({ error: null });
 			}, 8000);
 
-			self.setState({error: err, timeout: timeout});
+			_this.setState({ error: err, timeout: timeout });
 		});
 	},
-	componentWillUnmount() {
+	componentWillUnmount: function componentWillUnmount() {
 		this.emitter.remove();
 
 		if (this.timeout) {
 			clearTimeout(this.timeout);
 		}
 	},
-	clearError() {
-		this.setState({error: null});
+	clearError: function clearError() {
+		this.setState({ error: null });
 	},
-	render() {
+	render: function render() {
 		if (this.state.error) {
-			return (
-				React.createElement(Alert, {bsStyle: "warning", onDismiss: this.clearError}, 
-					React.createElement("p", null, this.state.error.error.name, ": ", this.state.error.error.message)
+			return _react2.default.createElement(
+				_reactBootstrap.Alert,
+				{ bsStyle: 'warning', onDismiss: this.clearError },
+				_react2.default.createElement(
+					'p',
+					null,
+					this.state.error.error.name,
+					': ',
+					this.state.error.error.message
 				)
 			);
 		} else {
@@ -47483,79 +47508,125 @@ module.exports = React.createClass({
 });
 
 },{"./DataChangeEmitter.js":414,"react":407,"react-bootstrap":216}],416:[function(require,module,exports){
-/** @jsx React.DOM */
+'use strict';
 
-var React = require('react');
-var Button = require('react-bootstrap').Button;
-var ListGroupItem = require('react-bootstrap').ListGroupItem;
+var _react = require('react');
 
-module.exports = React.createClass({
+var _react2 = _interopRequireDefault(_react);
+
+var _reactBootstrap = require('react-bootstrap');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+module.exports = _react2.default.createClass({
 	displayName: 'FileListItem',
 	propTypes: {
-		api: React.PropTypes.object.isRequired,
-		file: React.PropTypes.object.isRequired,
-		onDelete: React.PropTypes.func.isRequired,
-		onDownload: React.PropTypes.func.isRequired
+		api: _react2.default.PropTypes.object.isRequired,
+		file: _react2.default.PropTypes.object.isRequired,
+		onDelete: _react2.default.PropTypes.func.isRequired,
+		onDownload: _react2.default.PropTypes.func.isRequired
 	},
-	handleDownloadClick() {
+	handleDownloadClick: function handleDownloadClick() {
 		this.props.onDownload(this.props.file);
 	},
-	handleDeleteClick() {
+	handleDeleteClick: function handleDeleteClick() {
 		if (confirm('Are you sure you want to delete this fiel?')) {
 			this.props.onDelete(this.props.file);
 		}
 	},
-	render() {
+	render: function render() {
 		var file = this.props.file;
-		var url = '';
+		var url = undefined;
 
 		if (file.isPublic && file.publicFileUrl) {
-			url = (
-				React.createElement("div", null, 
-					React.createElement("div", {className: "external-url"}, file.publicFileUrl), 
-					React.createElement("div", {className: "clearfix"})
-				)
+			url = _react2.default.createElement(
+				'div',
+				null,
+				_react2.default.createElement(
+					'div',
+					{ className: 'external-url' },
+					file.publicFileUrl
+				),
+				_react2.default.createElement('div', { className: 'clearfix' })
 			);
 		}
 
-		return (
-			React.createElement(ListGroupItem, {style: {borderRadius: 0}}, 
-				React.createElement("span", {className: "pull-right button-group"}, 
-					React.createElement(Button, {bsStyle: "default", onClick: this.handleDownloadClick}, 
-						React.createElement("i", {className: "fa fa-cloud-download"})
-					), 
-					' ', 
-					React.createElement(Button, {bsStyle: "danger", onClick: this.handleDeleteClick}, 
-						React.createElement("i", {className: "fa fa-trash"})
-					)
-				), 
-				React.createElement("h5", {className: "list-group-item-heading"}, file.fileName + file.fileExtension), 
-				React.createElement("div", {className: "clearfix"}), 
-				url
-			)
+		return _react2.default.createElement(
+			_reactBootstrap.ListGroupItem,
+			{ style: { borderRadius: 0 } },
+			_react2.default.createElement(
+				'span',
+				{ className: 'pull-right button-group' },
+				_react2.default.createElement(
+					_reactBootstrap.Button,
+					{ bsStyle: 'default', onClick: this.handleDownloadClick },
+					_react2.default.createElement('i', { className: 'fa fa-cloud-download' })
+				),
+				' ',
+				_react2.default.createElement(
+					_reactBootstrap.Button,
+					{ bsStyle: 'danger', onClick: this.handleDeleteClick },
+					_react2.default.createElement('i', { className: 'fa fa-trash' })
+				)
+			),
+			_react2.default.createElement(
+				'h5',
+				{ className: 'list-group-item-heading' },
+				file.fileName + file.fileExtension
+			),
+			_react2.default.createElement('div', { className: 'clearfix' }),
+			url
 		);
 	}
 });
 
 },{"react":407,"react-bootstrap":216}],417:[function(require,module,exports){
-/** @jsx React.DOM */
+'use strict';
 
-var React = require('react');
-var TaskList = require('./TaskList.jsx');
-var TaskModal = require('./TaskModal.jsx');
-var ErrorAlert = require('./ErrorAlert.jsx');
-var TagsSidebar = require('./TagsSidebar.jsx');
-var LoadingSpinner = require('./LoadingSpinner.jsx');
-var TaskListFooter = require('./TaskListFooter.jsx');
-var dataChangeEmitter = require('./DataChangeEmitter.js');
-var TaskAttachmentsModal = require('./TaskAttachmentsModal.jsx');
+var _react = require('react');
 
-module.exports = React.createClass({
+var _react2 = _interopRequireDefault(_react);
+
+var _TaskList = require('./TaskList.jsx');
+
+var _TaskList2 = _interopRequireDefault(_TaskList);
+
+var _TaskModal = require('./TaskModal.jsx');
+
+var _TaskModal2 = _interopRequireDefault(_TaskModal);
+
+var _ErrorAlert = require('./ErrorAlert.jsx');
+
+var _ErrorAlert2 = _interopRequireDefault(_ErrorAlert);
+
+var _TagsSidebar = require('./TagsSidebar.jsx');
+
+var _TagsSidebar2 = _interopRequireDefault(_TagsSidebar);
+
+var _LoadingSpinner = require('./LoadingSpinner.jsx');
+
+var _LoadingSpinner2 = _interopRequireDefault(_LoadingSpinner);
+
+var _TaskListFooter = require('./TaskListFooter.jsx');
+
+var _TaskListFooter2 = _interopRequireDefault(_TaskListFooter);
+
+var _DataChangeEmitter = require('./DataChangeEmitter.js');
+
+var _DataChangeEmitter2 = _interopRequireDefault(_DataChangeEmitter);
+
+var _TaskAttachmentsModal = require('./TaskAttachmentsModal.jsx');
+
+var _TaskAttachmentsModal2 = _interopRequireDefault(_TaskAttachmentsModal);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+module.exports = _react2.default.createClass({
 	displayName: 'FilterableTaskList',
 	propTypes: {
-		api: React.PropTypes.object.isRequired
+		api: _react2.default.PropTypes.object.isRequired
 	},
-	getInitialState() {
+	getInitialState: function getInitialState() {
 		return {
 			tags: [],
 			tasks: [],
@@ -47569,151 +47640,170 @@ module.exports = React.createClass({
 			editTask: null,
 			showTaskModal: false,
 			showAttachmentsModal: false
-		}
+		};
 	},
-	handleTagSelect(tag) {
-		var self = this;
+	handleTagSelect: function handleTagSelect(tag) {
+		var _this = this;
 
-		this.setState({currentOffset: 0, selectedTag: tag}, function() {
-			self.reloadTasks();
+		this.setState({ currentOffset: 0, selectedTag: tag }, function () {
+			_this.reloadTasks();
 		});
 	},
-	handleStateChange(obj) {
-		var self = this;
+	handleStateChange: function handleStateChange(obj) {
+		var _this2 = this;
 
-		this.setState(obj, function() {
-			self.reloadTasks();
+		this.setState(obj, function () {
+			_this2.reloadTasks();
 		});
 	},
-	reloadTags() {
-		var self = this;
-		this.setState({loadingTags: true});
+	reloadTags: function reloadTags() {
+		var _this3 = this;
+
+		this.setState({ loadingTags: true });
 
 		var options = {
-			pipeline: [{$unwind: '$tags'}, { $group: { _id: '$tags', count: { $sum: 1 } }}, { $sort: {_id: 1}}]
-		}
+			pipeline: [{ $unwind: '$tags' }, { $group: { _id: '$tags', count: { $sum: 1 } } }, { $sort: { _id: 1 } }]
+		};
 
-		this.props.api.aggregate('yodata.task', options, function(err, results) {
+		this.props.api.aggregate('yodata.task', options, function (err, results) {
 			if (err) {
-				dataChangeEmitter.emit('error', err);
+				_DataChangeEmitter2.default.emit('error', err);
 			} else if (results && results.length > 0) {
-				self.setState({tags: results});
+				_this3.setState({ tags: results });
 			}
 
-			self.setState({loadingTags: false});
+			_this3.setState({ loadingTags: false });
 		});
 	},
-	reloadTasks() {
-		var self = this;
-		self.setState({loadingTasks: true});
+	reloadTasks: function reloadTasks() {
+		var _this4 = this;
+
+		this.setState({ loadingTasks: true });
 
 		var options = {
 			limit: 10,
-			sort: {createdAt: -1},
+			sort: { createdAt: -1 },
 			offset: this.state.currentOffset
-		}
+		};
 
-		var criteria = {deleted: this.state.showDeleted};
+		var criteria = { deleted: this.state.showDeleted };
 
 		if (this.state.selectedTag) {
 			criteria['tags'] = this.state.selectedTag;
 		}
 
 		options['criteria'] = criteria;
-	
-		this.props.api.find('yodata.task', options, function(err, results) {
+
+		this.props.api.find('yodata.task', options, function (err, results) {
 			if (err) {
-				dataChangeEmitter.emit('error', err);
+				_DataChangeEmitter2.default.emit('error', err);
 			} else if (results && results.data && results.data.length > 0) {
-				self.setState({tasks: results.data, meta: results.meta});
+				_this4.setState({ tasks: results.data, meta: results.meta });
 			} else {
-				self.setState({tasks: [], meta: null})
+				_this4.setState({ tasks: [], meta: null });
 			}
 
-			self.setState({loadingTasks: false});
+			_this4.setState({ loadingTasks: false });
 		});
 	},
-	componentDidMount() {
-		var self = this;
+	componentDidMount: function componentDidMount() {
+		var _this5 = this;
 
 		this.reloadTags();
 		this.reloadTasks();
 
-		this.emitter = dataChangeEmitter.addListener('event', function() {
-			self.reloadTasks();
+		this.emitter = _DataChangeEmitter2.default.addListener('event', function () {
+			_this5.reloadTasks();
 		});
 	},
-	componentWillUnmount() {
+	componentWillUnmount: function componentWillUnmount() {
 		this.emitter.remove();
 	},
-	showTaskModal() {
-		this.setState({editTask: null, showTaskModal: true});
+	showTaskModal: function showTaskModal() {
+		this.setState({ editTask: null, showTaskModal: true });
 	},
-	hideTaskModal(showAttachmentsModal) {
+	hideTaskModal: function hideTaskModal(showAttachmentsModal) {
 		if (showAttachmentsModal) {
-			this.setState({showAttachmentsModal: true, showTaskModal: false});
+			this.setState({ showAttachmentsModal: true, showTaskModal: false });
 		} else {
-			this.setState({editTask: null, showAttachmentsModal: false, showTaskModal: false});
+			this.setState({ editTask: null, showAttachmentsModal: false, showTaskModal: false });
 		}
 	},
-	handleRowClick(task) {
-		this.setState({editTask: task, showTaskModal: true});
+	handleRowClick: function handleRowClick(task) {
+		this.setState({ editTask: task, showTaskModal: true });
 	},
-	render() {
-		return (
-			React.createElement("div", {className: "row"}, 
-				React.createElement(ErrorAlert, null), 
-				React.createElement(TagsSidebar, {
-					tags: this.state.tags, 
-					selectedTag: this.state.selectedTag, 
-					onTagSelect: this.handleTagSelect}
-				), 
-				React.createElement("div", {className: this.state.tags.length > 0 ? 'col-sm-9' : 'col-sm-12'}, 
-					React.createElement("div", {className: "panel panel-default"}, 
-						React.createElement("div", {className: "panel-heading"}, 
-							React.createElement("button", {type: "button", className: "btn btn-primary", onClick: this.showTaskModal}, "New Task"), 
-							React.createElement(LoadingSpinner, {className: "pull-right", show: this.state.loadingTasks || this.state.loadingTags})
-						), 
-						React.createElement(TaskList, {
-							tasks: this.state.tasks, 
-							showDeleted: this.state.showDeleted, 
-							api: this.props.api, 
-							onRowClick: this.handleRowClick}
-						), 
-						React.createElement(TaskListFooter, {
-							currentOffset: this.state.currentOffset, 
-							meta: this.state.meta, 
-							showDeleted: this.state.showDeleted, 
-							onStateChange: this.handleStateChange}
-						)
-					)
-				), 
-				React.createElement(TaskModal, {
-					task: this.state.editTask, 
-					show: this.state.showTaskModal, 
-					onClose: this.hideTaskModal, 
-					api: this.props.api}
-				), 
-				React.createElement(TaskAttachmentsModal, {
-					task: this.state.editTask, 
-					show: this.state.showAttachmentsModal, 
-					onClose: this.hideTaskModal, 
-					api: this.props.api}
+	render: function render() {
+		return _react2.default.createElement(
+			'div',
+			{ className: 'row' },
+			_react2.default.createElement(_ErrorAlert2.default, null),
+			_react2.default.createElement(_TagsSidebar2.default, {
+				tags: this.state.tags,
+				selectedTag: this.state.selectedTag,
+				onTagSelect: this.handleTagSelect
+			}),
+			_react2.default.createElement(
+				'div',
+				{ className: this.state.tags.length > 0 ? 'col-sm-9' : 'col-sm-12' },
+				_react2.default.createElement(
+					'div',
+					{ className: 'panel panel-default' },
+					_react2.default.createElement(
+						'div',
+						{ className: 'panel-heading' },
+						_react2.default.createElement(
+							'button',
+							{ type: 'button', className: 'btn btn-primary', onClick: this.showTaskModal },
+							'New Task'
+						),
+						_react2.default.createElement(_LoadingSpinner2.default, { className: 'pull-right', show: this.state.loadingTasks || this.state.loadingTags })
+					),
+					_react2.default.createElement(_TaskList2.default, {
+						tasks: this.state.tasks,
+						showDeleted: this.state.showDeleted,
+						api: this.props.api,
+						onRowClick: this.handleRowClick
+					}),
+					_react2.default.createElement(_TaskListFooter2.default, {
+						currentOffset: this.state.currentOffset,
+						meta: this.state.meta,
+						showDeleted: this.state.showDeleted,
+						onStateChange: this.handleStateChange
+					})
 				)
-			)
+			),
+			_react2.default.createElement(_TaskModal2.default, {
+				task: this.state.editTask,
+				show: this.state.showTaskModal,
+				onClose: this.hideTaskModal,
+				api: this.props.api
+			}),
+			_react2.default.createElement(_TaskAttachmentsModal2.default, {
+				task: this.state.editTask,
+				show: this.state.showAttachmentsModal,
+				onClose: this.hideTaskModal,
+				api: this.props.api
+			})
 		);
 	}
 });
-},{"./DataChangeEmitter.js":414,"./ErrorAlert.jsx":415,"./LoadingSpinner.jsx":418,"./TagsSidebar.jsx":422,"./TaskAttachmentsModal.jsx":423,"./TaskList.jsx":427,"./TaskListFooter.jsx":428,"./TaskModal.jsx":430,"react":407}],418:[function(require,module,exports){
-var React = require('react');
 
-module.exports = React.createClass({
+},{"./DataChangeEmitter.js":414,"./ErrorAlert.jsx":415,"./LoadingSpinner.jsx":418,"./TagsSidebar.jsx":422,"./TaskAttachmentsModal.jsx":423,"./TaskList.jsx":427,"./TaskListFooter.jsx":428,"./TaskModal.jsx":430,"react":407}],418:[function(require,module,exports){
+'use strict';
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+module.exports = _react2.default.createClass({
 	displayName: 'LoadingSpinner',
 	propTypes: {
-		classNames: React.PropTypes.string,
-		show: React.PropTypes.bool
+		classNames: _react2.default.PropTypes.string,
+		show: _react2.default.PropTypes.bool
 	},
-	render() {
+	render: function render() {
 		if (!this.props.show) {
 			return null;
 		}
@@ -47724,42 +47814,70 @@ module.exports = React.createClass({
 			classes += this.props.className;
 		}
 
-		return (
-			React.createElement("i", {className: classes})
-		);
+		return _react2.default.createElement('i', { className: classes });
 	}
 });
 
 },{"react":407}],419:[function(require,module,exports){
-/** @jsx React.DOM */
+'use strict';
 
-var React = require('react');
-var YodataLoginButton = require('./YodataLoginButton.jsx');
+var _react = require('react');
 
-module.exports = React.createClass({
+var _react2 = _interopRequireDefault(_react);
+
+var _YodataLoginButton = require('./YodataLoginButton.jsx');
+
+var _YodataLoginButton2 = _interopRequireDefault(_YodataLoginButton);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+module.exports = _react2.default.createClass({
 	displayName: 'NavBar',
 	propTypes: {
-		clientId: React.PropTypes.string.isRequired,
-		scopes: React.PropTypes.string.isRequired,
-		onUserStateChange: React.PropTypes.func.isRequired
+		clientId: _react2.default.PropTypes.string.isRequired,
+		scopes: _react2.default.PropTypes.string.isRequired,
+		onUserStateChange: _react2.default.PropTypes.func.isRequired
 	},
-	handleUserStateChange(loggedIn) {
+	handleUserStateChange: function handleUserStateChange(loggedIn) {
 		this.props.onUserStateChange(loggedIn);
 	},
-	render() {
-		return (
-			React.createElement("nav", {role: "navigation", className: "navbar navbar-inverse"}, 
-				React.createElement("div", {className: "container-fluid"}, 
-					React.createElement("div", {className: "navbar-header"}, 
-						React.createElement("button", {type: "button", "data-toggle": "collapse", "data-target": "#yd-navbar-collapse-secure", className: "navbar-toggle collapsed", style: {borderColor: 'white', color: 'white'}}, 
-							React.createElement("span", {className: "sr-only"}, "Toggle navigation"), 
-							React.createElement("i", {className: "fa fa-bars"})
-						), 
-						React.createElement("a", {href: "https://yodata.io", className: "navbar-brand", target: "_blank"}, React.createElement("img", {className: "yd-brand-logo"}), " Yodata Tasks")
-					), 
-					React.createElement("div", {id: "yd-navbar-collapse-secure", className: "collapse navbar-collapse"}, 
-						React.createElement("ul", {className: "nav navbar-nav navbar-right"}, 
-							React.createElement("li", {style: {paddingLeft:'15px'}}, React.createElement(YodataLoginButton, {clientId: this.props.clientId, scopes: this.props.scopes, onUserStateChange: this.handleUserStateChange}))
+	render: function render() {
+		return _react2.default.createElement(
+			'nav',
+			{ role: 'navigation', className: 'navbar navbar-inverse' },
+			_react2.default.createElement(
+				'div',
+				{ className: 'container-fluid' },
+				_react2.default.createElement(
+					'div',
+					{ className: 'navbar-header' },
+					_react2.default.createElement(
+						'button',
+						{ type: 'button', 'data-toggle': 'collapse', 'data-target': '#yd-navbar-collapse-secure', className: 'navbar-toggle collapsed', style: { borderColor: 'white', color: 'white' } },
+						_react2.default.createElement(
+							'span',
+							{ className: 'sr-only' },
+							'Toggle navigation'
+						),
+						_react2.default.createElement('i', { className: 'fa fa-bars' })
+					),
+					_react2.default.createElement(
+						'a',
+						{ href: 'https://yodata.io', className: 'navbar-brand', target: '_blank' },
+						_react2.default.createElement('img', { className: 'yd-brand-logo' }),
+						' Yodata Tasks'
+					)
+				),
+				_react2.default.createElement(
+					'div',
+					{ id: 'yd-navbar-collapse-secure', className: 'collapse navbar-collapse' },
+					_react2.default.createElement(
+						'ul',
+						{ className: 'nav navbar-nav navbar-right' },
+						_react2.default.createElement(
+							'li',
+							{ style: { paddingLeft: '15px' } },
+							_react2.default.createElement(_YodataLoginButton2.default, { clientId: this.props.clientId, scopes: this.props.scopes, onUserStateChange: this.handleUserStateChange })
 						)
 					)
 				)
@@ -47769,69 +47887,92 @@ module.exports = React.createClass({
 });
 
 },{"./YodataLoginButton.jsx":433,"react":407}],420:[function(require,module,exports){
-/** @jsx React.DOM */
+'use strict';
 
-var React = require('react');
+var _react = require('react');
 
-module.exports = React.createClass({
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+module.exports = _react2.default.createClass({
 	displayName: 'PagerLink',
 	propTypes: {
-		currentOffset: React.PropTypes.number.isRequired,
-		pageNumber: React.PropTypes.number,
-		title: React.PropTypes.string,
-		text: React.PropTypes.string.isRequired
+		currentOffset: _react2.default.PropTypes.number.isRequired,
+		pageNumber: _react2.default.PropTypes.number,
+		title: _react2.default.PropTypes.string,
+		text: _react2.default.PropTypes.string.isRequired
 	},
-	handlePagerClick() {
+	handlePagerClick: function handlePagerClick() {
 		if (!this.isDisabled(this.props.pageNumber)) {
 			this.props.onPagerClick(this.props.pageNumber);
 		}
 	},
-	isDisabled(pageNumber) {
+	isDisabled: function isDisabled(pageNumber) {
 		if (!pageNumber) {
 			return true;
 		}
 
 		var offset = this.props.currentOffset;
 
-		if ((offset / 10) + 1 === pageNumber) {
+		if (offset / 10 + 1 === pageNumber) {
 			return true;
 		}
 
 		return false;
 	},
-	render() {
+	render: function render() {
 		var disabled = this.isDisabled(this.props.pageNumber);
 
-		return (
-			React.createElement("li", {className: disabled ? 'disabled': ''}, 
-		      React.createElement("a", {href: "#", "aria-label": this.props.title, className: "pager-link", title: this.props.title, onClick: this.handlePagerClick}, 
-		        React.createElement("span", {"aria-hidden": "true"}, this.props.text)
-		      )
-		    )
+		return _react2.default.createElement(
+			'li',
+			{ className: disabled ? 'disabled' : '' },
+			_react2.default.createElement(
+				'a',
+				{ href: '#', 'aria-label': this.props.title, className: 'pager-link', title: this.props.title, onClick: this.handlePagerClick },
+				_react2.default.createElement(
+					'span',
+					{ 'aria-hidden': 'true' },
+					this.props.text
+				)
+			)
 		);
-	}	
+	}
 });
 
 },{"react":407}],421:[function(require,module,exports){
-/** @jsx React.DOM */
+'use strict';
 
-var React = require('react');
-var Button = require('react-bootstrap').Button;
+var _react = require('react');
 
-module.exports = React.createClass({
+var _react2 = _interopRequireDefault(_react);
+
+var _reactBootstrap = require('react-bootstrap');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+module.exports = _react2.default.createClass({
 	displayName: 'TagListItem',
 	propTypes: {
-		tag: React.PropTypes.object.isRequired,
-		onTagSelect: React.PropTypes.func.isRequired
+		tag: _react2.default.PropTypes.object.isRequired,
+		onTagSelect: _react2.default.PropTypes.func.isRequired
 	},
-	handleButtonClick() {
+	handleButtonClick: function handleButtonClick() {
 		this.props.onTagSelect(this.props.tag._id);
 	},
-	render() {
-		return (
-			React.createElement("li", null, 
-				React.createElement(Button, {bsStyle: "default", bsSize: "xsmall", className: "btn-task-tag", onClick: this.handleButtonClick}, 
-					this.props.tag._id, " ", React.createElement("span", {className: "badge"}, this.props.tag.count)
+	render: function render() {
+		return _react2.default.createElement(
+			'li',
+			null,
+			_react2.default.createElement(
+				_reactBootstrap.Button,
+				{ bsStyle: 'default', bsSize: 'xsmall', className: 'btn-task-tag', onClick: this.handleButtonClick },
+				this.props.tag._id,
+				' ',
+				_react2.default.createElement(
+					'span',
+					{ className: 'badge' },
+					this.props.tag.count
 				)
 			)
 		);
@@ -47839,57 +47980,83 @@ module.exports = React.createClass({
 });
 
 },{"react":407,"react-bootstrap":216}],422:[function(require,module,exports){
-/** @jsx React.DOM */
+'use strict';
 
-var React = require('react');
-var TagListItem = require('./TagListItem.jsx');
-var Panel = require('react-bootstrap').Panel;
+var _react = require('react');
 
-module.exports = React.createClass({
+var _react2 = _interopRequireDefault(_react);
+
+var _TagListItem = require('./TagListItem.jsx');
+
+var _TagListItem2 = _interopRequireDefault(_TagListItem);
+
+var _reactBootstrap = require('react-bootstrap');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+module.exports = _react2.default.createClass({
 	displayName: 'TagsSidebar',
 	propTypes: {
-		onTagSelect: React.PropTypes.func.isRequired,
-		tags: React.PropTypes.arrayOf(React.PropTypes.object),
-		selectedTag: React.PropTypes.string
+		onTagSelect: _react2.default.PropTypes.func.isRequired,
+		tags: _react2.default.PropTypes.arrayOf(_react2.default.PropTypes.object),
+		selectedTag: _react2.default.PropTypes.string
 	},
-	getInitialState() {
+	getInitialState: function getInitialState() {
 		return {
 			tagFilterMessage: ''
-		}
+		};
 	},
-	handleTagSelect(tag) {
-		this.setState({tagFilterMessage: tag});
+	handleTagSelect: function handleTagSelect(tag) {
+		this.setState({ tagFilterMessage: tag });
 		this.props.onTagSelect(tag);
 	},
-	handleTagClear() {
-		this.setState({tagFilterMessage: ''});
+	handleTagClear: function handleTagClear() {
+		this.setState({ tagFilterMessage: '' });
 		this.props.onTagSelect(null);
 	},
-	render() {
+	render: function render() {
+		var _this = this;
+
 		if (this.props.tags && this.props.tags.length > 0) {
-			var self = this;
-			var tagList = this.props.tags.map(function(tag) {
-				return React.createElement(TagListItem, {key: tag._id, tag: tag, onTagSelect: self.handleTagSelect})
+			var tagList = this.props.tags.map(function (tag) {
+				return _react2.default.createElement(_TagListItem2.default, { key: tag._id, tag: tag, onTagSelect: _this.handleTagSelect });
 			});
 
-			var selectedTagHeader;
+			var selectedTagHeader = undefined;
 
 			if (this.props.selectedTag) {
-				selectedTagHeader = (
-					React.createElement("div", {className: "alert alert-info", role: "alert", onClick: this.handleTagClear}, 
-						React.createElement("button", {type: "button", className: "close btn-tag-filter-close", "aria-label": "Close"}, "x"), 
-						React.createElement("div", null, "Filtering by tag: ", React.createElement("strong", null, this.props.selectedTag))
+				selectedTagHeader = _react2.default.createElement(
+					'div',
+					{ className: 'alert alert-info', role: 'alert', onClick: this.handleTagClear },
+					_react2.default.createElement(
+						'button',
+						{ type: 'button', className: 'close btn-tag-filter-close', 'aria-label': 'Close' },
+						'x'
+					),
+					_react2.default.createElement(
+						'div',
+						null,
+						'Filtering by tag: ',
+						_react2.default.createElement(
+							'strong',
+							null,
+							this.props.selectedTag
+						)
 					)
 				);
 			}
 
-			return (
-				React.createElement("div", {className: "col-sm-3"}, 
-					React.createElement(Panel, {header: "Tags"}, 
-						selectedTagHeader, 
-						React.createElement("ul", {className: "list-inline"}, 
-							tagList
-						)
+			return _react2.default.createElement(
+				'div',
+				{ className: 'col-sm-3' },
+				_react2.default.createElement(
+					_reactBootstrap.Panel,
+					{ header: 'Tags' },
+					selectedTagHeader,
+					_react2.default.createElement(
+						'ul',
+						{ className: 'list-inline' },
+						tagList
 					)
 				)
 			);
@@ -47900,136 +48067,149 @@ module.exports = React.createClass({
 });
 
 },{"./TagListItem.jsx":421,"react":407,"react-bootstrap":216}],423:[function(require,module,exports){
-/** @jsx React.DOM */
+'use strict';
 
-var React = require('react');
-var Modal = require('react-bootstrap').Modal;
-var Button = require('react-bootstrap').Button;
-var ListGroup = require('react-bootstrap').ListGroup;
-var ListGroupItem = require('react-bootstrap').ListGroupItem;
-var Alert = require('react-bootstrap').Alert;
-var FileListItem = require('./FileListItem.jsx');
-var dataChangeEmitter = require('./DataChangeEmitter.js');
-var LoadingSpinner = require('./LoadingSpinner.jsx');
+var _react = require('react');
 
-module.exports = React.createClass({
+var _react2 = _interopRequireDefault(_react);
+
+var _reactBootstrap = require('react-bootstrap');
+
+var _FileListItem = require('./FileListItem.jsx');
+
+var _FileListItem2 = _interopRequireDefault(_FileListItem);
+
+var _DataChangeEmitter = require('./DataChangeEmitter.js');
+
+var _DataChangeEmitter2 = _interopRequireDefault(_DataChangeEmitter);
+
+var _LoadingSpinner = require('./LoadingSpinner.jsx');
+
+var _LoadingSpinner2 = _interopRequireDefault(_LoadingSpinner);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+module.exports = _react2.default.createClass({
 	displayName: 'TaskAttachmentsModal',
 	propTypes: {
-		onClose: React.PropTypes.func.isRequired,
-		show: React.PropTypes.bool.isRequired,
-		api: React.PropTypes.object,
-		task: React.PropTypes.object
+		onClose: _react2.default.PropTypes.func.isRequired,
+		show: _react2.default.PropTypes.bool.isRequired,
+		api: _react2.default.PropTypes.object,
+		task: _react2.default.PropTypes.object
 	},
-	getInitialState() {
+	getInitialState: function getInitialState() {
 		return {
 			loading: false,
 			saving: false,
 			files: [],
 			error: null
-		}
+		};
 	},
-	hideModal() {
+	hideModal: function hideModal() {
 		this.props.onClose();
 	},
-	selectFile(isPublic) {
-		this.setState({error: null});
+	selectFile: function selectFile(isPublic) {
+		this.setState({ error: null });
 		$('#isPublic').val(isPublic);
 		$('.fileInput').click();
 	},
-	reloadFileList() {
-		var self = this;
-		self.setState({loading: true});
+	reloadFileList: function reloadFileList() {
+		var _this = this;
+
+		this.setState({ loading: true });
 
 		var options = {
 			fields: 'files',
 			populate: {
 				path: 'files'
-			} 
+			}
 		};
 
-		self.props.api.findById('yodata.task', self.props.task.objectId, options, function(err, results) {
+		this.props.api.findById('yodata.task', this.props.task.objectId, options, function (err, results) {
 			if (err) {
-				self.setState({error: err, loading: false});
+				_this.setState({ error: err, loading: false });
 			} else {
-				self.setState({files: results.files, loading: false});
+				_this.setState({ files: results.files, loading: false });
 			}
 		});
 	},
-	handleFileDownload(file) {
-		var self = this;
+	handleFileDownload: function handleFileDownload(file) {
+		var _this2 = this;
 
 		if (file.isPublic && file.publicFileUrl) {
 			document.location.href = file.publicFileUrl;
 		} else {
-			self.setState({error: null, loading: true});
+			this.setState({ error: null, loading: true });
 
-			this.props.api.generateDownloadUrlForPrivateFileById(file.objectId, function(err, url) {
+			this.props.api.generateDownloadUrlForPrivateFileById(file.objectId, function (err, url) {
 				if (err) {
-					self.setState({error: err, loading: false});
+					_this2.setState({ error: err, loading: false });
 				} else {
 					window.location.href = url;
-					self.setState({loading: false});
+					_this2.setState({ loading: false });
 				}
 			});
 		}
 	},
-	handleFileDelete(file) {
-		var self = this;
-		var task = self.props.task;
+	handleFileDelete: function handleFileDelete(file) {
+		var _this3 = this;
+
+		var task = this.props.task;
 		var updateStatement = {
 			$pull: {
 				files: file.objectId
 			}
-		}
+		};
 
-		self.setState({saving: true});
+		this.setState({ saving: true });
 
-		self.props.api.update('yodata.task', task.objectId, updateStatement , function(err, results) {
+		this.props.api.update('yodata.task', task.objectId, updateStatement, function (err, results) {
 			if (err) {
-				self.setState({error: err, saving: false});
+				_this3.setState({ error: err, saving: false });
 			} else {
-				self.props.api.remove('files', file.objectId, function(err, results) {
+				_this3.props.api.remove('files', file.objectId, function (err, results) {
 					if (err) {
-						self.setState({error: err, saving: false});
+						_this3.setState({ error: err, saving: false });
 					} else {
-						self.setState({saving: false});
-						self.reloadFileList();
-						dataChangeEmitter.emit('event');
+						_this3.setState({ saving: false });
+						_this3.reloadFileList();
+						_DataChangeEmitter2.default.emit('event');
 					}
 				});
 			}
 		});
 	},
-	onEntered() {
-		var self = this;
-		var task = self.props.task;
-		self.reloadFileList();
+	onEntered: function onEntered() {
+		var _this4 = this;
 
-		$('.fileInput').change(function(event) {
-			self.setState({saving: true});
+		var task = this.props.task;
+		this.reloadFileList();
+
+		$('.fileInput').change(function (event) {
+			_this4.setState({ saving: true });
 			var file = event.target.files[0];
 			var formData = new FormData();
 			formData.append(file.name, file);
 			formData.append('isPublic', $("#isPublic").val());
 
-		    self.props.api.uploadFile(formData, function(err, result) {
-		    	if (err) {
-		    		self.setState({error: err, saving: false});
-		    	} else {
-					self.props.api.update('yodata.task', task.objectId, {$push: {files: result.objectId}}, function(err, result) {
+			_this4.props.api.uploadFile(formData, function (err, result) {
+				if (err) {
+					_this4.setState({ error: err, saving: false });
+				} else {
+					_this4.props.api.update('yodata.task', task.objectId, { $push: { files: result.objectId } }, function (err, result) {
 						if (err) {
-							self.setState({error: err, saving: false});
+							_this4.setState({ error: err, saving: false });
 						} else {
-							self.setState({saving: false});
-							self.reloadFileList();
-							dataChangeEmitter.emit('event');
+							_this4.setState({ saving: false });
+							_this4.reloadFileList();
+							_DataChangeEmitter2.default.emit('event');
 						}
 					});
-		    	}
-		    })
+				}
+			});
 		});
 	},
-	onExited() {
+	onExited: function onExited() {
 		this.setState({
 			loading: false,
 			saving: false,
@@ -48037,164 +48217,230 @@ module.exports = React.createClass({
 			error: null
 		});
 	},
-	render() {
-		var self = this;
+	render: function render() {
+		var _this5 = this;
 
-		var fileList = this.state.files.map(function(file) {
-			return (
-				React.createElement(FileListItem, {
-					key: file.objectId, 
-					api: self.props.api, 
-					task: self.props.task, 
-					file: file, 
-					onDelete: self.handleFileDelete, 
-					onDownload: self.handleFileDownload}
-				)
-			);
+		var fileList = this.state.files.map(function (file) {
+			return _react2.default.createElement(_FileListItem2.default, {
+				key: file.objectId,
+				api: _this5.props.api,
+				task: _this5.props.task,
+				file: file,
+				onDelete: _this5.handleFileDelete,
+				onDownload: _this5.handleFileDownload
+			});
 		});
 
 		if (fileList.length === 0) {
-			fileList = React.createElement(ListGroupItem, null, "This task currently has no attachments. Click one of the buttons below to attach a file to this task.")
+			fileList = _react2.default.createElement(
+				_reactBootstrap.ListGroupItem,
+				null,
+				'This task currently has no attachments. Click one of the buttons below to attach a file to this task.'
+			);
 		}
 
-		return (
-			React.createElement(Modal, {show: this.props.show, onEntered: this.onEntered}, 
-				React.createElement(Modal.Header, {onHide: this.hideModal}, 
-					React.createElement("button", {type: "button", className: "close", onClick: this.hideModal}, "x"), 
-					React.createElement(Modal.Title, null, "Attachments")
-				), 
-				 this.state.error ? React.createElement(Alert, {bsStyle: "warning", onDismiss: this.clearError}, React.createElement("p", null, this.state.error.error.name, ": ", this.state.error.error.message)) : null, 
-				React.createElement(ListGroup, {style: {marginBottom: '-1px', marginTop: '-1px'}}, 
-  					fileList
-				), 
-				React.createElement(Modal.Footer, null, 
-					React.createElement("form", {className: "text-left", style: {margin:0}}, 
-						React.createElement("input", {type: "file", className: "fileInput", style: {display:'none', visibility:'hidden', width:'1px'}}), 
-						React.createElement("input", {type: "hidden", id: "isPublic"}), 
-    					React.createElement(Button, {bsStyle: "primary", onClick: this.selectFile.bind(this, false)}, "Add Private File"), 
-    					React.createElement(Button, {bsStyle: "warning", onClick: this.selectFile.bind(this, true)}, "Add Public File"), 
-    					React.createElement(LoadingSpinner, {className: "pull-right", show: this.state.saving || this.state.loading})
-					)
+		return _react2.default.createElement(
+			_reactBootstrap.Modal,
+			{ show: this.props.show, onEntered: this.onEntered },
+			_react2.default.createElement(
+				_reactBootstrap.Modal.Header,
+				{ onHide: this.hideModal },
+				_react2.default.createElement(
+					'button',
+					{ type: 'button', className: 'close', onClick: this.hideModal },
+					'x'
+				),
+				_react2.default.createElement(
+					_reactBootstrap.Modal.Title,
+					null,
+					'Attachments'
+				)
+			),
+			this.state.error ? _react2.default.createElement(
+				_reactBootstrap.Alert,
+				{ bsStyle: 'warning', onDismiss: this.clearError },
+				_react2.default.createElement(
+					'p',
+					null,
+					this.state.error.error.name,
+					': ',
+					this.state.error.error.message
+				)
+			) : null,
+			_react2.default.createElement(
+				_reactBootstrap.ListGroup,
+				{ style: { marginBottom: '-1px', marginTop: '-1px' } },
+				fileList
+			),
+			_react2.default.createElement(
+				_reactBootstrap.Modal.Footer,
+				null,
+				_react2.default.createElement(
+					'form',
+					{ className: 'text-left', style: { margin: 0 } },
+					_react2.default.createElement('input', { type: 'file', className: 'fileInput', style: { display: 'none', visibility: 'hidden', width: '1px' } }),
+					_react2.default.createElement('input', { type: 'hidden', id: 'isPublic' }),
+					_react2.default.createElement(
+						_reactBootstrap.Button,
+						{ bsStyle: 'primary', onClick: this.selectFile.bind(this, false) },
+						'Add Private File'
+					),
+					_react2.default.createElement(
+						_reactBootstrap.Button,
+						{ bsStyle: 'warning', onClick: this.selectFile.bind(this, true) },
+						'Add Public File'
+					),
+					_react2.default.createElement(_LoadingSpinner2.default, { className: 'pull-right', show: this.state.saving || this.state.loading })
 				)
 			)
 		);
-	}	
+	}
 });
 
 },{"./DataChangeEmitter.js":414,"./FileListItem.jsx":416,"./LoadingSpinner.jsx":418,"react":407,"react-bootstrap":216}],424:[function(require,module,exports){
-/** @jsx React.DOM */
+'use strict';
 
-var React = require('react');
-var dataChangeEmitter = require('./DataChangeEmitter.js');
-var Button = require('react-bootstrap').Button
+var _react = require('react');
 
-module.exports = React.createClass({
+var _react2 = _interopRequireDefault(_react);
+
+var _DataChangeEmitter = require('./DataChangeEmitter.js');
+
+var _DataChangeEmitter2 = _interopRequireDefault(_DataChangeEmitter);
+
+var _reactBootstrap = require('react-bootstrap');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+module.exports = _react2.default.createClass({
 	displayName: 'TaskCompleteButton',
 	propTypes: {
-		api: React.PropTypes.object.isRequired,
-		task: React.PropTypes.object.isRequired
+		api: _react2.default.PropTypes.object.isRequired,
+		task: _react2.default.PropTypes.object.isRequired
 	},
-	handleButtonClick() {
+	handleButtonClick: function handleButtonClick() {
 		var task = this.props.task;
 
 		if (task.deleted) {
-			var query = {$set: {deleted: false}};
+			var query = { $set: { deleted: false } };
 
 			this.props.api.update('yodata.task', task.objectId, query, updateCallback);
 		} else {
-			this.props.api.update('yodata.task', task.objectId, {$set: {completed: !task.completed}}, updateCallback);
+			this.props.api.update('yodata.task', task.objectId, { $set: { completed: !task.completed } }, updateCallback);
 		}
 	},
-	render() {
+	render: function render() {
 		if (this.props.task.deleted) {
-			return (
-				React.createElement(Button, {bsStyle: "default", title: "Undelete", onClick: this.handleButtonClick}, 
-					React.createElement("i", {className: "fa fa-undo"})
-				)
+			return _react2.default.createElement(
+				_reactBootstrap.Button,
+				{ bsStyle: 'default', title: 'Undelete', onClick: this.handleButtonClick },
+				_react2.default.createElement('i', { className: 'fa fa-undo' })
 			);
 		} else {
-			return (
-				React.createElement(Button, {bsStyle: this.props.task.completed ? 'success' : 'default', onClick: this.handleButtonClick}, 
-					React.createElement("i", {className: "fa fa-check"})
-				)
+			return _react2.default.createElement(
+				_reactBootstrap.Button,
+				{ bsStyle: this.props.task.completed ? 'success' : 'default', onClick: this.handleButtonClick },
+				_react2.default.createElement('i', { className: 'fa fa-check' })
 			);
 		}
 	}
 });
 
-function updateCallback(err, results) {
+var updateCallback = function updateCallback(err, results) {
 	if (err) {
-		dataChangeEmitter.emit('error', err);
+		_DataChangeEmitter2.default.emit('error', err);
 	} else {
-		dataChangeEmitter.emit('event');
+		_DataChangeEmitter2.default.emit('event');
 	}
-}
+};
 
 },{"./DataChangeEmitter.js":414,"react":407,"react-bootstrap":216}],425:[function(require,module,exports){
-/** @jsx React.DOM */
+'use strict';
 
-var React = require('react');
-var Button = require('react-bootstrap').Button;
-var TaskDeleteModal = require('./TaskDeleteModal.jsx');
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-module.exports = React.createClass({
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactBootstrap = require('react-bootstrap');
+
+var _TaskDeleteModal = require('./TaskDeleteModal.jsx');
+
+var _TaskDeleteModal2 = _interopRequireDefault(_TaskDeleteModal);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+module.exports = _react2.default.createClass({
 	displayName: 'TaskDeleteButton',
 	propTypes: {
-		api: React.PropTypes.object.isRequired,
-		task: React.PropTypes.object.isRequired
+		api: _react2.default.PropTypes.object.isRequired,
+		task: _react2.default.PropTypes.object.isRequired
 	},
-	getInitialState() {
+	getInitialState: function getInitialState() {
 		return {
 			show: false
-		}
+		};
 	},
-	showDeleteModal() {
-		this.setState({show: true});
+	showDeleteModal: function showDeleteModal() {
+		this.setState({ show: true });
 	},
-	handleModalState(show) {
-		this.setState({show: show});
+	handleModalState: function handleModalState(show) {
+		this.setState({ show: show });
 	},
-	render() {
-		return (
-			React.createElement("span", null, 
-				React.createElement(Button, {bsStyle: "danger", style: {zIndex: 100}, onClick: this.showDeleteModal}, 
-					React.createElement("i", {className: "fa fa-trash"})
-				), 
-				this.state.show ? React.createElement(TaskDeleteModal, React.__spread({showModal: this.handleModalState},  this.props)) : null
-			)
+	render: function render() {
+		return _react2.default.createElement(
+			'span',
+			null,
+			_react2.default.createElement(
+				_reactBootstrap.Button,
+				{ bsStyle: 'danger', style: { zIndex: 100 }, onClick: this.showDeleteModal },
+				_react2.default.createElement('i', { className: 'fa fa-trash' })
+			),
+			this.state.show ? _react2.default.createElement(_TaskDeleteModal2.default, _extends({ showModal: this.handleModalState }, this.props)) : null
 		);
 	}
 });
 
 },{"./TaskDeleteModal.jsx":426,"react":407,"react-bootstrap":216}],426:[function(require,module,exports){
-/** @jsx React.DOM */
+'use strict';
 
-var React = require('react');
-var Modal = require('react-bootstrap').Modal;
-var Button = require('react-bootstrap').Button;
-var dataChangeEmitter = require('./DataChangeEmitter.js');
-var LoadingSpinner = require('./LoadingSpinner.jsx');
+var _react = require('react');
 
-module.exports = React.createClass({
+var _react2 = _interopRequireDefault(_react);
+
+var _reactBootstrap = require('react-bootstrap');
+
+var _DataChangeEmitter = require('./DataChangeEmitter.js');
+
+var _DataChangeEmitter2 = _interopRequireDefault(_DataChangeEmitter);
+
+var _LoadingSpinner = require('./LoadingSpinner.jsx');
+
+var _LoadingSpinner2 = _interopRequireDefault(_LoadingSpinner);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+module.exports = _react2.default.createClass({
 	displayName: 'TaskDeleteModal',
 	propTypes: {
-		api: React.PropTypes.object.isRequired,
-		task: React.PropTypes.object.isRequired,
-		showModal: React.PropTypes.func.isRequired
+		api: _react2.default.PropTypes.object.isRequired,
+		task: _react2.default.PropTypes.object.isRequired,
+		showModal: _react2.default.PropTypes.func.isRequired
 	},
-	getInitialState() {
+	getInitialState: function getInitialState() {
 		return {
 			deleting: false
 		};
 	},
-	hideModal() {
+	hideModal: function hideModal() {
 		this.props.showModal(false);
 	},
-	softDeleteTask() {
-		var query = {$set: {deleted: true}};
+	softDeleteTask: function softDeleteTask() {
+		var query = { $set: { deleted: true } };
 		this.props.api.update('yodata.task', this.props.task.objectId, query, apiCallback);
 	},
-	handleButtonClick() {
+	handleButtonClick: function handleButtonClick() {
 		var task = this.props.task;
 
 		if (task.deleted) {
@@ -48203,155 +48449,228 @@ module.exports = React.createClass({
 			this.softDeleteTask();
 		}
 	},
-	render() {
+	render: function render() {
 		var task = this.props.task;
 
-		return (
-			React.createElement(Modal.Dialog, {show: this.state.show, dialogClassName: "text-left"}, 
-				React.createElement("div", {className: "modal-content panel-danger"}, 
-					React.createElement(Modal.Header, {className: "panel-heading", onHide: this.hideModal}, 
-						React.createElement("button", {type: "button", className: "close", onClick: this.hideModal}, "x"), 
-						React.createElement(Modal.Title, null, task.deleted ? 'Hard' : 'Soft', " Delete Task?")
-					), 
-					React.createElement(Modal.Body, null, 
-						React.createElement("p", null, "Would you like to delete the task titled:"), 
-						React.createElement("p", {className: "text-danger"}, React.createElement("strong", null, task.title))
-					), 
-					React.createElement(Modal.Footer, null, 
-						React.createElement(Button, {bsStyle: "default", onClick: this.hideModal}, "Cancel"), 
-						React.createElement(Button, {bsStyle: "danger", onClick: this.handleButtonClick}, "Delete"), 
-						React.createElement(LoadingSpinner, {className: "pull-right", show: this.state.deleting})
+		return _react2.default.createElement(
+			_reactBootstrap.Modal.Dialog,
+			{ show: this.state.show, dialogClassName: 'text-left' },
+			_react2.default.createElement(
+				'div',
+				{ className: 'modal-content panel-danger' },
+				_react2.default.createElement(
+					_reactBootstrap.Modal.Header,
+					{ className: 'panel-heading', onHide: this.hideModal },
+					_react2.default.createElement(
+						'button',
+						{ type: 'button', className: 'close', onClick: this.hideModal },
+						'x'
+					),
+					_react2.default.createElement(
+						_reactBootstrap.Modal.Title,
+						null,
+						task.deleted ? 'Hard' : 'Soft',
+						' Delete Task?'
 					)
+				),
+				_react2.default.createElement(
+					_reactBootstrap.Modal.Body,
+					null,
+					_react2.default.createElement(
+						'p',
+						null,
+						'Would you like to delete the task titled:'
+					),
+					_react2.default.createElement(
+						'p',
+						{ className: 'text-danger' },
+						_react2.default.createElement(
+							'strong',
+							null,
+							task.title
+						)
+					)
+				),
+				_react2.default.createElement(
+					_reactBootstrap.Modal.Footer,
+					null,
+					_react2.default.createElement(
+						_reactBootstrap.Button,
+						{ bsStyle: 'default', onClick: this.hideModal },
+						'Cancel'
+					),
+					_react2.default.createElement(
+						_reactBootstrap.Button,
+						{ bsStyle: 'danger', onClick: this.handleButtonClick },
+						'Delete'
+					),
+					_react2.default.createElement(_LoadingSpinner2.default, { className: 'pull-right', show: this.state.deleting })
 				)
 			)
 		);
 	}
 });
 
-function apiCallback(err, results) {
+var apiCallback = function apiCallback(err, results) {
 	if (err) {
-		dataChangeEmitter.emit('error', err);
+		_DataChangeEmitter2.default.emit('error', err);
 	} else {
-		dataChangeEmitter.emit('event');
+		_DataChangeEmitter2.default.emit('event');
 	}
-}
+};
 
 },{"./DataChangeEmitter.js":414,"./LoadingSpinner.jsx":418,"react":407,"react-bootstrap":216}],427:[function(require,module,exports){
-/** @jsx React.DOM */
+'use strict';
 
-var React = require('react');
-var TaskListItem = require('./TaskListItem.jsx');
+var _react = require('react');
 
-module.exports = React.createClass({
+var _react2 = _interopRequireDefault(_react);
+
+var _TaskListItem = require('./TaskListItem.jsx');
+
+var _TaskListItem2 = _interopRequireDefault(_TaskListItem);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+module.exports = _react2.default.createClass({
 	displayName: 'TaskList',
 	propTypes: {
-		api: React.PropTypes.object.isRequired,
-		tasks: React.PropTypes.arrayOf(React.PropTypes.object),
-		showDeleted: React.PropTypes.bool
+		api: _react2.default.PropTypes.object.isRequired,
+		tasks: _react2.default.PropTypes.arrayOf(_react2.default.PropTypes.object),
+		showDeleted: _react2.default.PropTypes.bool
 	},
-	handleRowClick(task) {
+	handleRowClick: function handleRowClick(task) {
 		this.props.onRowClick(task);
 	},
-	render() {
+	render: function render() {
+		var _this = this;
+
 		if (!this.props.tasks || this.props.tasks.length === 0) {
 			return null;
 		}
 
-		var self = this;
-		var taskList = this.props.tasks.map(function(task) {
-			return (
-				React.createElement(TaskListItem, {
-					key: task.objectId, 
-					task: task, 
-					showDeleted: self.props.showDeleted, 
-					api: self.props.api, 
-					onRowClick: self.handleRowClick}
-				)
-			);
+		var taskList = this.props.tasks.map(function (task) {
+			return _react2.default.createElement(_TaskListItem2.default, {
+				key: task.objectId,
+				task: task,
+				showDeleted: _this.props.showDeleted,
+				api: _this.props.api,
+				onRowClick: _this.handleRowClick
+			});
 		});
 
-		return (
-			React.createElement("table", {className: "table table-hover"}, 
-	      		React.createElement("tbody", null, 
-	      			taskList
-				)
+		return _react2.default.createElement(
+			'table',
+			{ className: 'table table-hover' },
+			_react2.default.createElement(
+				'tbody',
+				null,
+				taskList
 			)
 		);
 	}
 });
 
 },{"./TaskListItem.jsx":429,"react":407}],428:[function(require,module,exports){
-/** @jsx React.DOM */
+'use strict';
 
-var React = require('react');
-var Switch = require('react-bootstrap-switch');
-var TasksPager = require('./TasksPager.jsx');
+var _react = require('react');
 
-module.exports = React.createClass({
+var _react2 = _interopRequireDefault(_react);
+
+var _reactBootstrapSwitch = require('react-bootstrap-switch');
+
+var _reactBootstrapSwitch2 = _interopRequireDefault(_reactBootstrapSwitch);
+
+var _TasksPager = require('./TasksPager.jsx');
+
+var _TasksPager2 = _interopRequireDefault(_TasksPager);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+module.exports = _react2.default.createClass({
 	displayName: 'TaskListFooter',
 	propTypes: {
-		currentOffset: React.PropTypes.number.isRequired,
-		meta: React.PropTypes.object,
-		showDeleted: React.PropTypes.bool,
-		onStateChange: React.PropTypes.func.isRequired
+		currentOffset: _react2.default.PropTypes.number.isRequired,
+		meta: _react2.default.PropTypes.object,
+		showDeleted: _react2.default.PropTypes.bool,
+		onStateChange: _react2.default.PropTypes.func.isRequired
 	},
-	handleDeleteToggle(state) {
-		this.props.onStateChange({showDeleted: state, currentOffset: 0});
+	handleDeleteToggle: function handleDeleteToggle(state) {
+		this.props.onStateChange({ showDeleted: state, currentOffset: 0 });
 	},
-	handleStateChange(obj) {
+	handleStateChange: function handleStateChange(obj) {
 		this.props.onStateChange(obj);
 	},
-	render() {
-		return (
-			React.createElement("div", {className: "panel-footer"}, 
-				React.createElement("span", {className: "pull-right"}, 
-					React.createElement(Switch, {
-						onChange: this.handleDeleteToggle, 
-						onColor: "danger", size: "small", 
-						onText: String.fromCharCode(160), 
-						offText: String.fromCharCode(160), 
-						labelText: "trash", 
-						state: this.props.showDeleted}
-					)
-				), 
-				React.createElement(TasksPager, {
-					meta: this.props.meta, 
-					currentOffset: this.props.currentOffset, 
-					onStateChange: this.handleStateChange}
-				), 
-				React.createElement("div", {className: "clearfix"})
-			)
-		)
+	render: function render() {
+		return _react2.default.createElement(
+			'div',
+			{ className: 'panel-footer' },
+			_react2.default.createElement(
+				'span',
+				{ className: 'pull-right' },
+				_react2.default.createElement(_reactBootstrapSwitch2.default, {
+					onChange: this.handleDeleteToggle,
+					onColor: 'danger', size: 'small',
+					onText: String.fromCharCode(160),
+					offText: String.fromCharCode(160),
+					labelText: 'trash',
+					state: this.props.showDeleted
+				})
+			),
+			_react2.default.createElement(_TasksPager2.default, {
+				meta: this.props.meta,
+				currentOffset: this.props.currentOffset,
+				onStateChange: this.handleStateChange
+			}),
+			_react2.default.createElement('div', { className: 'clearfix' })
+		);
 	}
 });
 
 },{"./TasksPager.jsx":431,"react":407,"react-bootstrap-switch":144}],429:[function(require,module,exports){
-/** @jsx React.DOM */
+'use strict';
 
-var React = require('react');
-var TaskDeleteButton = require('./TaskDeleteButton.jsx');
-var TaskCompleteButton = require('./TaskCompleteButton.jsx');
-var utils = require('./utils.jsx');
+var _react = require('react');
 
-module.exports = React.createClass({
+var _react2 = _interopRequireDefault(_react);
+
+var _TaskDeleteButton = require('./TaskDeleteButton.jsx');
+
+var _TaskDeleteButton2 = _interopRequireDefault(_TaskDeleteButton);
+
+var _TaskCompleteButton = require('./TaskCompleteButton.jsx');
+
+var _TaskCompleteButton2 = _interopRequireDefault(_TaskCompleteButton);
+
+var _utils = require('./utils.jsx');
+
+var _utils2 = _interopRequireDefault(_utils);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+module.exports = _react2.default.createClass({
 	displayName: 'TaskListItem',
 	propTypes: {
-		api: React.PropTypes.object.isRequired,
-		task: React.PropTypes.object.isRequired,
-		onRowClick: React.PropTypes.func.isRequired,
-		showDeleted: React.PropTypes.bool
+		api: _react2.default.PropTypes.object.isRequired,
+		task: _react2.default.PropTypes.object.isRequired,
+		onRowClick: _react2.default.PropTypes.func.isRequired,
+		showDeleted: _react2.default.PropTypes.bool
 	},
-	handleEditTask() {
+	handleEditTask: function handleEditTask() {
 		this.props.onRowClick(this.props.task);
 	},
-	render() {
+	render: function render() {
 		var api = this.props.api;
 		var task = this.props.task;
-		var dueDate = (task.dueDate && !task.completed ? new Date(task.dueDate) : null);
+		var dueDate = task.dueDate && !task.completed ? new Date(task.dueDate) : null;
 		var now = new Date();
-		var pastDue = (dueDate && dueDate < now);
-		var headingClass = 'list-group-item-heading'
-		var taskPriority, hasFiles, dueDateDiv, taskNotes; 
+		var pastDue = dueDate && dueDate < now;
+		var headingClass = 'list-group-item-heading';
+		var taskPriority = undefined,
+		    hasFiles = undefined,
+		    dueDateDiv = undefined,
+		    taskNotes = undefined;
 
 		if (task.completed) {
 			headingClass += ' task-muted';
@@ -48362,77 +48681,112 @@ module.exports = React.createClass({
 		}
 
 		if (task.priority && task.priority === 'high' || task.priority === 'low') {
-			taskPriority = React.createElement("i", {className: task.priority === 'high' ? 'fa fa-arrow-up text-danger' : 'fa fa-arrow-down text-success', style: {marginLeft: '5px'}});
+			taskPriority = _react2.default.createElement('i', { className: task.priority === 'high' ? 'fa fa-arrow-up text-danger' : 'fa fa-arrow-down text-success', style: { marginLeft: '5px' } });
 		}
 
 		if (task.files && task.files.length > 0) {
-			hasFiles = React.createElement("i", {className: "fa fa-paperclip", style: {marginLeft: '5px'}});
+			hasFiles = _react2.default.createElement('i', { className: 'fa fa-paperclip', style: { marginLeft: '5px' } });
 		}
 
 		if (dueDate) {
-			dueDateDiv = React.createElement("div", {className: pastDue ? 'text-danger small' : 'small'}, "Due: ", utils.formatDateString(task.dueDate));
+			dueDateDiv = _react2.default.createElement(
+				'div',
+				{ className: pastDue ? 'text-danger small' : 'small' },
+				'Due: ',
+				_utils2.default.formatDateString(task.dueDate)
+			);
 		}
 
 		if (task.notes && task.notes.length > 0) {
-			taskNotes = React.createElement("p", {className: task.completed ? 'list-group-item-text task-muted' : 'list-group-item-text', style: {whiteSpace: 'pre-wrap', marginTop: '9px'}}, task.notes); 
+			taskNotes = _react2.default.createElement(
+				'p',
+				{ className: task.completed ? 'list-group-item-text task-muted' : 'list-group-item-text', style: { whiteSpace: 'pre-wrap', marginTop: '9px' } },
+				task.notes
+			);
 		}
 
-		return (
-			React.createElement("tr", null, 
-				React.createElement("td", {className: "yodata-task", onClick: this.handleEditTask}, 
-					React.createElement("h4", {className: headingClass}, 
-						task.title, 
-						taskPriority, 
-						hasFiles
-					), 
-					dueDateDiv, 
-					taskNotes
-				), 
-				React.createElement("td", {className: "text-right text-nowrap"}, 
-					React.createElement(TaskCompleteButton, {task: task, api: api}), " ", React.createElement(TaskDeleteButton, {task: task, api: api, showDeleted: this.props.showDeleted})
-				)
+		return _react2.default.createElement(
+			'tr',
+			null,
+			_react2.default.createElement(
+				'td',
+				{ className: 'yodata-task', onClick: this.handleEditTask },
+				_react2.default.createElement(
+					'h4',
+					{ className: headingClass },
+					task.title,
+					taskPriority,
+					hasFiles
+				),
+				dueDateDiv,
+				taskNotes
+			),
+			_react2.default.createElement(
+				'td',
+				{ className: 'text-right text-nowrap' },
+				_react2.default.createElement(_TaskCompleteButton2.default, { task: task, api: api }),
+				' ',
+				_react2.default.createElement(_TaskDeleteButton2.default, { task: task, api: api, showDeleted: this.props.showDeleted })
 			)
 		);
 	}
 });
 
 },{"./TaskCompleteButton.jsx":424,"./TaskDeleteButton.jsx":425,"./utils.jsx":437,"react":407}],430:[function(require,module,exports){
-/** @jsx React.DOM */
+'use strict';
 
-var React = require('react');
-var Modal = require('react-bootstrap').Modal;
-var Button = require('react-bootstrap').Button;
-var Alert = require('react-bootstrap').Alert;
-var LoadingSpinner = require('./LoadingSpinner.jsx');
-var _ = require('underscore');
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactBootstrap = require('react-bootstrap');
+
+var _LoadingSpinner = require('./LoadingSpinner.jsx');
+
+var _LoadingSpinner2 = _interopRequireDefault(_LoadingSpinner);
+
+var _underscore = require('underscore');
+
+var _underscore2 = _interopRequireDefault(_underscore);
+
 require('./underscore_mixins.jsx');
-var utils = require('./utils.jsx');
-var dataChangeEmitter = require('./DataChangeEmitter.js');
 
-module.exports = React.createClass({
+var _utils = require('./utils.jsx');
+
+var _utils2 = _interopRequireDefault(_utils);
+
+var _DataChangeEmitter = require('./DataChangeEmitter.js');
+
+var _DataChangeEmitter2 = _interopRequireDefault(_DataChangeEmitter);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+module.exports = _react2.default.createClass({
 	displayName: 'TaskModal',
 	propTypes: {
-		task: React.PropTypes.object,
-		api: React.PropTypes.object.isRequired,
-		onClose: React.PropTypes.func.isRequired,
-		show: React.PropTypes.bool
+		task: _react2.default.PropTypes.object,
+		api: _react2.default.PropTypes.object.isRequired,
+		onClose: _react2.default.PropTypes.func.isRequired,
+		show: _react2.default.PropTypes.bool
 	},
-	getInitialState() {
+	getInitialState: function getInitialState() {
 		return {
 			saving: false,
 			error: null
-		}
+		};
 	},
-	showAttachmentsModal() {
+	showAttachmentsModal: function showAttachmentsModal() {
 		this.props.onClose(true);
 	},
-	clearValidationErrors() {
+	clearValidationErrors: function clearValidationErrors() {
 		$('#generalError').addClass('hidden');
 		$('input').parent().removeClass('has-error');
-		$('input').siblings('.error-message').text('')
+		$('input').siblings('.error-message').text('');
 		$('textarea').siblings('.error-message').text('');
 	},
-	buildDocFromForm() {
+	buildDocFromForm: function buildDocFromForm() {
 		var doc = {};
 		doc.title = $('#title').val();
 		doc.priority = $('#priority').val();
@@ -48441,32 +48795,32 @@ module.exports = React.createClass({
 		doc.completed = $('#completed').is(':checked');
 		doc.tags = $('#tags').tagsinput('items');
 		var completedDate = $('#completedDate').val();
-		doc.completedDate = (doc.completed ? (completedDate.length > 0 ? completedDate : new Date()) : null);
+		doc.completedDate = doc.completed ? completedDate.length > 0 ? completedDate : new Date() : null;
 
-		return _.compactObject(doc);
+		return _underscore2.default.compactObject(doc);
 	},
-	hideModal() {
+	hideModal: function hideModal() {
 		this.props.onClose();
 	},
-	clearError() {
-		this.setState({error: null});
+	clearError: function clearError() {
+		this.setState({ error: null });
 	},
-	saveTask() {
-		var self = this;
+	saveTask: function saveTask() {
+		var _this = this;
 
-		self.setState({saving: true}, function() {
-			self.clearValidationErrors();
-			var doc = self.buildDocFromForm();
+		this.setState({ saving: true }, function () {
+			_this.clearValidationErrors();
+			var doc = _this.buildDocFromForm();
 
-			if (self.props.task) {
-				self.updateTask(doc);
+			if (_this.props.task) {
+				_this.updateTask(doc);
 			} else {
 				doc.deleted = false;
-				self.insertTask(doc);
+				_this.insertTask(doc);
 			}
 		});
 	},
-	displayValidationErrors(errors) {
+	displayValidationErrors: function displayValidationErrors(errors) {
 		var keys = Object.keys(errors);
 
 		for (var index = 0; index < keys.length; index++) {
@@ -48475,59 +48829,60 @@ module.exports = React.createClass({
 			$('#' + key).siblings('.error-message').text(errors[key].message);
 		}
 	},
-	insertTask(task) {
-		var self = this;
+	insertTask: function insertTask(task) {
+		var _this2 = this;
 
-		this.props.api.insert('yodata.task', task, function(err, result) {
-			self.setState({saving: false});
+		this.props.api.insert('yodata.task', task, function (err, result) {
+			_this2.setState({ saving: false });
 
 			if (err) {
 				if (err.error && err.error.name === 'ValidationError') {
-					self.displayValidationErrors(err.error.errors);
+					_this2.displayValidationErrors(err.error.errors);
 				} else {
-					self.setState({error: err});
+					_this2.setState({ error: err });
 				}
 			} else {
-				dataChangeEmitter.emit('event');
-				self.props.onClose();
+				_DataChangeEmitter2.default.emit('event');
+				_this2.props.onClose();
 			}
 		});
 	},
-	updateTask(updatedTask) {
-		var self = this;
-		var updateStatment = utils.buildMongoDbUpdate(_.omit(this.props.task, 'objectId', 'createdAt', 'modifiedAt', 'deleted', 'files'), updatedTask);
+	updateTask: function updateTask(updatedTask) {
+		var _this3 = this;
 
-		this.props.api.update('yodata.task', this.props.task.objectId, updateStatment, function(err, result) {
+		var updateStatment = _utils2.default.buildMongoDbUpdate(_underscore2.default.omit(this.props.task, 'objectId', 'createdAt', 'modifiedAt', 'deleted', 'files'), updatedTask);
+
+		this.props.api.update('yodata.task', this.props.task.objectId, updateStatment, function (err, result) {
 			if (err) {
 				if (err.error && err.error.name === 'ValidationError') {
-					self.displayValidationErrors(err.error.errors);
+					_this3.displayValidationErrors(err.error.errors);
 				} else {
-					self.setState({error: err});
+					_this3.setState({ error: err });
 				}
 			} else {
-				dataChangeEmitter.emit('event');
-				self.props.onClose();
+				_DataChangeEmitter2.default.emit('event');
+				_this3.props.onClose();
 			}
 		});
 	},
-	onEntered() {
-		this.setState({error: null, saving: false});
+	onEntered: function onEntered() {
+		this.setState({ error: null, saving: false });
 
 		if (this.props.show) {
 			$('#tags').tagsinput();
-			$('#tags').on('beforeItemAdd', function(event) {
-		  		event.item = event.item.toLowerCase();
-		  		return event;
+			$('#tags').on('beforeItemAdd', function (event) {
+				event.item = event.item.toLowerCase();
+				return event;
 			});
 
 			if (this.props.task) {
 				var task = this.props.task;
 				$('#title').val(task.title);
 				$('#priority').val(task.priority);
-				$('#dueDate').val(utils.formatDateString(task.dueDate));
+				$('#dueDate').val(_utils2.default.formatDateString(task.dueDate));
 				$('#notes').val(task.notes);
 				$('#completed').prop('checked', task.completed);
-				$('#completedDate').val(utils.formatDateString(task.completedDate));
+				$('#completedDate').val(_utils2.default.formatDateString(task.completedDate));
 
 				if (task.tags) {
 					for (var index = 0; index < task.tags.length; index++) {
@@ -48541,99 +48896,194 @@ module.exports = React.createClass({
 			$('#tags').tagsinput('destroy');
 		}
 	},
-	render() {
+	render: function render() {
 		var hasTask = this.props.task ? true : false;
-		var modalTitle = hasTask? 'Edit Task' : 'Insert Task';
+		var modalTitle = hasTask ? 'Edit Task' : 'Insert Task';
 		var errorAlert = '';
 
 		if (this.state.error) {
-			errorAlert = React.createElement(Alert, {bsStyle: "warning", onDismiss: this.clearError}, React.createElement("p", null, this.state.error.error.name, ": ", this.state.error.error.message));
+			errorAlert = _react2.default.createElement(
+				_reactBootstrap.Alert,
+				{ bsStyle: 'warning', onDismiss: this.clearError },
+				_react2.default.createElement(
+					'p',
+					null,
+					this.state.error.error.name,
+					': ',
+					this.state.error.error.message
+				)
+			);
 		}
 
-		var commonProps = {autoComplete: 'off', autoCorrect: 'off', spellCheck: 'false'};
+		var commonProps = { autoComplete: 'off', autoCorrect: 'off', spellCheck: 'false' };
 
-		return (
-			React.createElement(Modal, {show: this.props.show, onEntered: this.onEntered}, 
-				React.createElement(Modal.Header, {className: "panel-heading", onHide: this.hideModal}, 
-					React.createElement("button", {type: "button", className: "close", onClick: this.hideModal}, "x"), 
-					React.createElement(Modal.Title, null, modalTitle)
-				), 
-				React.createElement(Modal.Body, null, 
-					errorAlert, 
-					React.createElement("div", {className: "form-group"}, 
-						React.createElement("label", {className: "control-label", htmlFor: "title"}, "Title *"), 
-						React.createElement("input", React.__spread({type: "text", id: "title", className: "form-control"},  commonProps)), 
-						React.createElement("div", {className: "help-block error-message has-error"})
-					), 
-					React.createElement("div", {className: "form-group"}, 
-						React.createElement("label", {className: "control-label", htmlFor: "tags"}, "Tags"), 
-						React.createElement("input", {type: "text", id: "tags", className: "form-control", "data-role": "tagsinput"}), 
-						React.createElement("div", {className: "help-block error-message has-error"})
-					), 
-					React.createElement("div", {className: "form-group"}, 
-						React.createElement("label", {className: "control-label", htmlFor: "title"}, "Priority"), 
-						React.createElement("select", {id: "priority", className: "form-control"}, 
-							React.createElement("option", {value: "high"}, "High"), 
-							React.createElement("option", {value: "medium"}, "Medium"), 
-							React.createElement("option", {value: "low"}, "Low")
-						), 
-						React.createElement("div", {className: "help-block error-message has-error"})
-					), 
-					React.createElement("div", {className: "form-group"}, 
-						React.createElement("label", {className: "control-label", htmlFor: "title"}, "Due Date"), 
-						React.createElement("input", React.__spread({type: "date", id: "dueDate", className: "form-control"},  commonProps)), 
-						React.createElement("div", {className: "help-block error-message has-error"})
-					), 
-					React.createElement("div", {className: "form-group"}, 
-						React.createElement("label", {className: "control-label", htmlFor: "title"}, "Notes"), 
-						React.createElement("textarea", {id: "notes", className: "form-control", rows: "3"}), 
-						React.createElement("div", {className: "help-block error-message has-error"})
-					), 
-            		React.createElement("div", {className: "checkbox"}, 
-						React.createElement("label", null, 
-							React.createElement("input", {type: "checkbox", id: "completed"}), 
-							"Completed"
-						)
-            		), 
-            		React.createElement("div", {className: "form-group"}, 
-						React.createElement("label", {className: "control-label", htmlFor: "title"}, "Completed Date"), 
-						React.createElement("input", React.__spread({type: "date", id: "completedDate", className: "form-control"},  commonProps)), 
-						React.createElement("div", {className: "help-block error-message has-error"})
-					)
-            	), 
-				React.createElement(Modal.Footer, null, 
-					React.createElement(Button, {bsStyle: "primary", className: "pull-left", onClick: this.saveTask}, this.props.task ? 'Update' : 'Save'), 
-					hasTask ? React.createElement(Button, {bsStyle: "default", className: "pull-left", onClick: this.showAttachmentsModal}, "View/Edit Attachments") : '', 
-					React.createElement(LoadingSpinner, {className: "pull-right", show: this.state.saving})
+		return _react2.default.createElement(
+			_reactBootstrap.Modal,
+			{ show: this.props.show, onEntered: this.onEntered },
+			_react2.default.createElement(
+				_reactBootstrap.Modal.Header,
+				{ className: 'panel-heading', onHide: this.hideModal },
+				_react2.default.createElement(
+					'button',
+					{ type: 'button', className: 'close', onClick: this.hideModal },
+					'x'
+				),
+				_react2.default.createElement(
+					_reactBootstrap.Modal.Title,
+					null,
+					modalTitle
 				)
+			),
+			_react2.default.createElement(
+				_reactBootstrap.Modal.Body,
+				null,
+				errorAlert,
+				_react2.default.createElement(
+					'div',
+					{ className: 'form-group' },
+					_react2.default.createElement(
+						'label',
+						{ className: 'control-label', htmlFor: 'title' },
+						'Title *'
+					),
+					_react2.default.createElement('input', _extends({ type: 'text', id: 'title', className: 'form-control' }, commonProps)),
+					_react2.default.createElement('div', { className: 'help-block error-message has-error' })
+				),
+				_react2.default.createElement(
+					'div',
+					{ className: 'form-group' },
+					_react2.default.createElement(
+						'label',
+						{ className: 'control-label', htmlFor: 'tags' },
+						'Tags'
+					),
+					_react2.default.createElement('input', { type: 'text', id: 'tags', className: 'form-control', 'data-role': 'tagsinput' }),
+					_react2.default.createElement('div', { className: 'help-block error-message has-error' })
+				),
+				_react2.default.createElement(
+					'div',
+					{ className: 'form-group' },
+					_react2.default.createElement(
+						'label',
+						{ className: 'control-label', htmlFor: 'title' },
+						'Priority'
+					),
+					_react2.default.createElement(
+						'select',
+						{ id: 'priority', className: 'form-control' },
+						_react2.default.createElement(
+							'option',
+							{ value: 'high' },
+							'High'
+						),
+						_react2.default.createElement(
+							'option',
+							{ value: 'medium' },
+							'Medium'
+						),
+						_react2.default.createElement(
+							'option',
+							{ value: 'low' },
+							'Low'
+						)
+					),
+					_react2.default.createElement('div', { className: 'help-block error-message has-error' })
+				),
+				_react2.default.createElement(
+					'div',
+					{ className: 'form-group' },
+					_react2.default.createElement(
+						'label',
+						{ className: 'control-label', htmlFor: 'title' },
+						'Due Date'
+					),
+					_react2.default.createElement('input', _extends({ type: 'date', id: 'dueDate', className: 'form-control' }, commonProps)),
+					_react2.default.createElement('div', { className: 'help-block error-message has-error' })
+				),
+				_react2.default.createElement(
+					'div',
+					{ className: 'form-group' },
+					_react2.default.createElement(
+						'label',
+						{ className: 'control-label', htmlFor: 'title' },
+						'Notes'
+					),
+					_react2.default.createElement('textarea', { id: 'notes', className: 'form-control', rows: '3' }),
+					_react2.default.createElement('div', { className: 'help-block error-message has-error' })
+				),
+				_react2.default.createElement(
+					'div',
+					{ className: 'checkbox' },
+					_react2.default.createElement(
+						'label',
+						null,
+						_react2.default.createElement('input', { type: 'checkbox', id: 'completed' }),
+						'Completed'
+					)
+				),
+				_react2.default.createElement(
+					'div',
+					{ className: 'form-group' },
+					_react2.default.createElement(
+						'label',
+						{ className: 'control-label', htmlFor: 'title' },
+						'Completed Date'
+					),
+					_react2.default.createElement('input', _extends({ type: 'date', id: 'completedDate', className: 'form-control' }, commonProps)),
+					_react2.default.createElement('div', { className: 'help-block error-message has-error' })
+				)
+			),
+			_react2.default.createElement(
+				_reactBootstrap.Modal.Footer,
+				null,
+				_react2.default.createElement(
+					_reactBootstrap.Button,
+					{ bsStyle: 'primary', className: 'pull-left', onClick: this.saveTask },
+					this.props.task ? 'Update' : 'Save'
+				),
+				hasTask ? _react2.default.createElement(
+					_reactBootstrap.Button,
+					{ bsStyle: 'default', className: 'pull-left', onClick: this.showAttachmentsModal },
+					'View/Edit Attachments'
+				) : '',
+				_react2.default.createElement(_LoadingSpinner2.default, { className: 'pull-right', show: this.state.saving })
 			)
 		);
-	}	
+	}
 });
 
 },{"./DataChangeEmitter.js":414,"./LoadingSpinner.jsx":418,"./underscore_mixins.jsx":436,"./utils.jsx":437,"react":407,"react-bootstrap":216,"underscore":411}],431:[function(require,module,exports){
-/** @jsx React.DOM */
+'use strict';
 
-var React = require('react');
-var PagerLink = require('./PagerLink.jsx');
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-module.exports = React.createClass({
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _PagerLink = require('./PagerLink.jsx');
+
+var _PagerLink2 = _interopRequireDefault(_PagerLink);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+module.exports = _react2.default.createClass({
 	displayName: 'TasksPager',
 	propTypes: {
-		onStateChange: React.PropTypes.func.isRequired,
-		meta: React.PropTypes.object,
-		currentOffset: React.PropTypes.number.isRequired
+		onStateChange: _react2.default.PropTypes.func.isRequired,
+		meta: _react2.default.PropTypes.object,
+		currentOffset: _react2.default.PropTypes.number.isRequired
 	},
-	handlePagerClick(pageNumber) {
-		this.props.onStateChange({currentOffset: (pageNumber - 1) * 10});
+	handlePagerClick: function handlePagerClick(pageNumber) {
+		this.props.onStateChange({ currentOffset: (pageNumber - 1) * 10 });
 	},
-	render() {
+	render: function render() {
 		if (!this.props.meta) {
 			return null;
 		}
 
 		var firstPage = this.props.meta['first-page'];
-		var	prevPage = this.props.meta['prev-page'];
+		var prevPage = this.props.meta['prev-page'];
 		var nextPage = this.props.meta['next-page'];
 		var lastPage = this.props.meta['last-page'];
 		var currentOffset = this.props.currentOffset;
@@ -48641,157 +49091,188 @@ module.exports = React.createClass({
 		var commonProps = {
 			currentOffset: currentOffset,
 			onPagerClick: this.handlePagerClick
-		}
+		};
 
-		return (
-			React.createElement("nav", null, 
-			  React.createElement("ul", {className: "pagination", style: {margin:'0px'}}, 
-			  	React.createElement(PagerLink, React.__spread({pageNumber: firstPage},  commonProps, {title: "first page", text: String.fromCharCode(171)})), 
-			  	React.createElement(PagerLink, React.__spread({pageNumber: prevPage},  commonProps, {title: "previous page", text: String.fromCharCode(8249)})), 
-			  	React.createElement(PagerLink, React.__spread({pageNumber: nextPage},  commonProps, {title: "next page", text: String.fromCharCode(8250)})), 
-			  	React.createElement(PagerLink, React.__spread({pageNumber: lastPage},  commonProps, {title: "last page", text: String.fromCharCode(187)}))
-			  )
+		return _react2.default.createElement(
+			'nav',
+			null,
+			_react2.default.createElement(
+				'ul',
+				{ className: 'pagination', style: { margin: '0px' } },
+				_react2.default.createElement(_PagerLink2.default, _extends({ pageNumber: firstPage }, commonProps, { title: 'first page', text: String.fromCharCode(171) })),
+				_react2.default.createElement(_PagerLink2.default, _extends({ pageNumber: prevPage }, commonProps, { title: 'previous page', text: String.fromCharCode(8249) })),
+				_react2.default.createElement(_PagerLink2.default, _extends({ pageNumber: nextPage }, commonProps, { title: 'next page', text: String.fromCharCode(8250) })),
+				_react2.default.createElement(_PagerLink2.default, _extends({ pageNumber: lastPage }, commonProps, { title: 'last page', text: String.fromCharCode(187) }))
 			)
 		);
 	}
-})
+});
+
 },{"./PagerLink.jsx":420,"react":407}],432:[function(require,module,exports){
-/** @jsx React.DOM */
+'use strict';
 
-var React = require('react');
+var _react = require('react');
 
-module.exports = React.createClass({
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+module.exports = _react2.default.createClass({
 	displayName: 'UserAvatar',
 	propTypes: {
-		profile: React.PropTypes.object
+		profile: _react2.default.PropTypes.object
 	},
-	render() {
+	render: function render() {
 		var profile = this.props.profile;
 
 		if (profile && profile.avatarImageUrl) {
-			return (
-				React.createElement("div", null, 
-					React.createElement("img", {src: profile.avatarImageUrl, width: "40", height: "40", style: {marginRight:10}, className: "thumbnail pull-left"}), 
-					React.createElement("span", {style: {lineHeight:'40px'}}, 
-						"Welcome ", React.createElement("strong", null, profile.name ? profile.name : profile.profileName)
-					), 
-					React.createElement("div", {className: "clearfix"})
-				)
+			return _react2.default.createElement(
+				'div',
+				null,
+				_react2.default.createElement('img', { src: profile.avatarImageUrl, width: '40', height: '40', style: { marginRight: 10 }, className: 'thumbnail pull-left' }),
+				_react2.default.createElement(
+					'span',
+					{ style: { lineHeight: '40px' } },
+					'Welcome ',
+					_react2.default.createElement(
+						'strong',
+						null,
+						profile.name ? profile.name : profile.profileName
+					)
+				),
+				_react2.default.createElement('div', { className: 'clearfix' })
 			);
 		}
 
-		return (
-			React.createElement("div", null, "This sample application is intended to showcase the various features of the ", React.createElement("a", {href: "https://yodata.io", target: "_blank"}, "Yodata"), " API. To start managing your task list click the ", React.createElement("strong", null, "Log In"), " button in the menu bar.")
+		return _react2.default.createElement(
+			'div',
+			null,
+			'This sample application is intended to showcase the various features of the ',
+			_react2.default.createElement(
+				'a',
+				{ href: 'https://yodata.io', target: '_blank' },
+				'Yodata'
+			),
+			' API. To start managing your task list click the ',
+			_react2.default.createElement(
+				'strong',
+				null,
+				'Log In'
+			),
+			' button in the menu bar.'
 		);
 	}
 });
 
 },{"react":407}],433:[function(require,module,exports){
-/** @jsx React.DOM */
+'use strict';
 
-var React = require('react');
-var globals = require('./globals.jsx');
+var _react = require('react');
 
-module.exports = React.createClass({
+var _react2 = _interopRequireDefault(_react);
+
+var _globals = require('./globals.jsx');
+
+var _globals2 = _interopRequireDefault(_globals);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+module.exports = _react2.default.createClass({
 	displayName: 'YodataLoginButton',
 	propTypes: {
-		clientId: React.PropTypes.string.isRequired,
-		scopes: React.PropTypes.string.isRequired,
-		onUserStateChange: React.PropTypes.func.isRequired
+		clientId: _react2.default.PropTypes.string.isRequired,
+		scopes: _react2.default.PropTypes.string.isRequired,
+		onUserStateChange: _react2.default.PropTypes.func.isRequired
 	},
-	getQueryParameterByName(name) {
+	getQueryParameterByName: function getQueryParameterByName(name) {
 		name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
 		var regex = new RegExp('[\\?&]' + name + '=([^&#]*)'),
-		results = regex.exec(location.search);
+		    results = regex.exec(location.search);
 		return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
 	},
-	saveAuthCode() {
+	saveAuthCode: function saveAuthCode() {
 		var authCode = this.getQueryParameterByName('code');
 
 		if (authCode) {
-			localStorage.setItem(globals.YD_AUTH_CODE, authCode);
+			localStorage.setItem(_globals2.default.YD_AUTH_CODE, authCode);
 			this.requestAuthToken();
 		}
 	},
-	requestAuthToken() {
-		var self = this;
+	requestAuthToken: function requestAuthToken() {
 		var redurectUri = this.removeQueryStringParamFromURI(window.location.href, 'code');
 
 		var params = {
 			'client_id': this.state.clientId,
-			'code': localStorage.getItem(globals.YD_AUTH_CODE),
+			'code': localStorage.getItem(_globals2.default.YD_AUTH_CODE),
 			'grant_type': 'authorization_code',
 			'redirect_uri': redurectUri
-		}
+		};
 
 		$.ajax({
-			url : new YDClient({}).getApiUrl() + 'dialog/exchange',
+			url: new YDClient({}).getApiUrl() + 'dialog/exchange',
 			type: 'POST',
 			data: params,
-			success(data, textStatus, jqXHR) 
-			{
-				localStorage.setItem(globals.YD_AUTH_TOKEN, data.access_token);
+			success: function success(data, textStatus, jqXHR) {
+				localStorage.setItem(_globals2.default.YD_AUTH_TOKEN, data.access_token);
 				document.location.href = redurectUri;
 			},
-			error(jqXHR, textStatus, errorThrown) 
-			{
-				alert('An unexpected error occurred.');    
+			error: function error(jqXHR, textStatus, errorThrown) {
+				alert('An unexpected error occurred.');
 			}
 		});
 	},
-	removeQueryStringParamFromURI(uri, qsToRemove) {
-		if (uri.indexOf('?') <= 0)
-			return uri;
+	removeQueryStringParamFromURI: function removeQueryStringParamFromURI(uri, qsToRemove) {
+		if (uri.indexOf('?') <= 0) return uri;
 
 		var queryString = uri.substring(uri.indexOf('?') + 1);
 		var root = uri.substring(0, uri.indexOf('?'));
-		var params = {}, oldQueries, newQueries = [], temp, i, l;
+		var params = {},
+		    oldQueries = undefined,
+		    newQueries = [],
+		    temp = undefined,
+		    i = undefined,
+		    l = undefined;
 
 		// Split into key/value pairs
 		oldQueries = queryString.split('&');
 
 		// Convert the array of strings into an object
-		for ( i = 0, l = oldQueries.length; i < l; i++ ) {
+		for (i = 0, l = oldQueries.length; i < l; i++) {
 			temp = oldQueries[i].split('=');
 
-			if (temp[0].toLowerCase() != qsToRemove.toLowerCase())
-				newQueries[newQueries.length] = oldQueries[i];
+			if (temp[0].toLowerCase() != qsToRemove.toLowerCase()) newQueries[newQueries.length] = oldQueries[i];
 		}
 
 		return root + (newQueries.length > 0 ? '?' : '') + newQueries.join('&');
 	},
-	getInitialState() {
+	getInitialState: function getInitialState() {
 		if (this.props.authToken) {
-			localStorage.setItem(globals.YD_AUTH_TOKEN, this.props.authToken);
+			localStorage.setItem(_globals2.default.YD_AUTH_TOKEN, this.props.authToken);
 		}
 
-		var loggedIn = localStorage.getItem(globals.YD_AUTH_TOKEN) ? true : false;
-		
+		var loggedIn = localStorage.getItem(_globals2.default.YD_AUTH_TOKEN) ? true : false;
+
 		return {
 			clientId: this.props.clientId,
 			scopes: this.props.scopes.split(','),
 			loggedIn: loggedIn
-		}
+		};
 	},
-	handleClick() {
+	handleClick: function handleClick() {
+		var _this = this;
+
 		if (this.state.loggedIn) {
-			var self = this;
+			localStorage.removeItem(_globals2.default.YD_AUTH_TOKEN);
+			localStorage.removeItem(_globals2.default.YD_AUTH_CODE);
 
-			localStorage.removeItem(globals.YD_AUTH_TOKEN);
-			localStorage.removeItem(globals.YD_AUTH_CODE);
-
-			this.setState({loggedIn: false}, function() {
-				self.props.onUserStateChange(false);
+			this.setState({ loggedIn: false }, function () {
+				_this.props.onUserStateChange(false);
 			});
-			
 		} else {
-			document.location.href = new YDClient({}).getApiUrl() + 
-					'dialog/authorize?client_id=' + this.state.clientId + 
-					'&response_type=code&scope=' + this.state.scopes.join(',') + 
-					'&redirect_uri=' + encodeURI(window.location.href);
+			document.location.href = new YDClient({}).getApiUrl() + 'dialog/authorize?client_id=' + this.state.clientId + '&response_type=code&scope=' + this.state.scopes.join(',') + '&redirect_uri=' + encodeURI(window.location.href);
 		}
 	},
-	render() {
+	render: function render() {
 		this.saveAuthCode();
 
 		var buttonStyle = {
@@ -48799,64 +49280,83 @@ module.exports = React.createClass({
 			fontSize: '9pt',
 			borderRadius: 6,
 			padding: '4px 8px 4px 8px',
-			background : 'white',
+			background: 'white',
 			color: 'gray',
 			fontWeight: 'normal',
 			margin: '12px 0px 12px 0px'
-		}
+		};
 
 		var logoStyle = {
 			width: 14,
 			height: 14,
 			marginRight: 6
-		}
+		};
 
-		return (
-			React.createElement("button", {type: "button", style: buttonStyle, onClick: this.handleClick}, 
-				React.createElement("img", {src: "https://yodata.io/images/yodata-circle.png", style: logoStyle}), 
-				(this.state.loggedIn ? 'Log Out' : 'Log In')
-			)
+		return _react2.default.createElement(
+			'button',
+			{ type: 'button', style: buttonStyle, onClick: this.handleClick },
+			_react2.default.createElement('img', { src: 'https://yodata.io/images/yodata-circle.png', style: logoStyle }),
+			this.state.loggedIn ? 'Log Out' : 'Log In'
 		);
 	}
 });
 
 },{"./globals.jsx":435,"react":407}],434:[function(require,module,exports){
-/** @jsx React.DOM */
+'use strict';
 
-var React = require('react');
-var globals = require('./globals.jsx');
-var NavBar = require('./NavBar.jsx');
-var UserAvatar = require('./UserAvatar.jsx');
-var FilterableTaskList = require('./FilterableTaskList.jsx');
-var dataChangeEmitter = require('./DataChangeEmitter.js');
+var _react = require('react');
 
-module.exports = React.createClass({
+var _react2 = _interopRequireDefault(_react);
+
+var _globals = require('./globals.jsx');
+
+var _globals2 = _interopRequireDefault(_globals);
+
+var _NavBar = require('./NavBar.jsx');
+
+var _NavBar2 = _interopRequireDefault(_NavBar);
+
+var _UserAvatar = require('./UserAvatar.jsx');
+
+var _UserAvatar2 = _interopRequireDefault(_UserAvatar);
+
+var _FilterableTaskList = require('./FilterableTaskList.jsx');
+
+var _FilterableTaskList2 = _interopRequireDefault(_FilterableTaskList);
+
+var _DataChangeEmitter = require('./DataChangeEmitter.js');
+
+var _DataChangeEmitter2 = _interopRequireDefault(_DataChangeEmitter);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+module.exports = _react2.default.createClass({
 	displayName: 'YodataTasks',
-	getInitialState() {
-		var loggedIn = localStorage.getItem(globals.YD_AUTH_TOKEN) ? true : false;
+	getInitialState: function getInitialState() {
+		var loggedIn = localStorage.getItem(_globals2.default.YD_AUTH_TOKEN) ? true : false;
 
 		return {
 			profile: null,
-			api: (loggedIn ? new YDClient({authToken: localStorage.getItem(globals.YD_AUTH_TOKEN)}) : null)
-		}
+			api: loggedIn ? new YDClient({ authToken: localStorage.getItem(_globals2.default.YD_AUTH_TOKEN) }) : null
+		};
 	},
-	componentDidMount() {
-		if (this.state.api) {
-			var self = this;
+	componentDidMount: function componentDidMount() {
+		var _this = this;
 
-			this.state.api.userProfile(function(err, results) {
+		if (this.state.api) {
+			this.state.api.userProfile(function (err, results) {
 				if (err) {
-					dataChangeEmitter.emit('error', err);
+					_DataChangeEmitter2.default.emit('error', err);
 				} else if (results) {
-					self.setState({profile: results.profile});
+					_this.setState({ profile: results.profile });
 				}
 			});
 		}
 	},
-	handleUserStateChange(loggedIn) {
+	handleUserStateChange: function handleUserStateChange(loggedIn) {
 		if (loggedIn) {
 			this.setState({
-				api: new YDClient({authToken: localStorage.getItem(globals.YD_AUTH_TOKEN)}),
+				api: new YDClient({ authToken: localStorage.getItem(_globals2.default.YD_AUTH_TOKEN) }),
 				profile: null
 			});
 		} else {
@@ -48866,62 +49366,76 @@ module.exports = React.createClass({
 			});
 		}
 	},
-	render() {
-		return (
-			React.createElement("div", null, 
-				React.createElement(NavBar, {clientId: globals.clientId, scopes: globals.scopes, api: this.state.api, onUserStateChange: this.handleUserStateChange}), 
-				React.createElement("div", {className: "container"}, 
-					React.createElement(UserAvatar, {profile: this.state.profile}), 
-					this.state.api ? React.createElement(FilterableTaskList, {api: this.state.api}) : null
-				)
+	render: function render() {
+		return _react2.default.createElement(
+			'div',
+			null,
+			_react2.default.createElement(_NavBar2.default, { clientId: _globals2.default.clientId, scopes: _globals2.default.scopes, api: this.state.api, onUserStateChange: this.handleUserStateChange }),
+			_react2.default.createElement(
+				'div',
+				{ className: 'container' },
+				_react2.default.createElement(_UserAvatar2.default, { profile: this.state.profile }),
+				this.state.api ? _react2.default.createElement(_FilterableTaskList2.default, { api: this.state.api }) : null
 			)
 		);
 	}
 });
+
 },{"./DataChangeEmitter.js":414,"./FilterableTaskList.jsx":417,"./NavBar.jsx":419,"./UserAvatar.jsx":432,"./globals.jsx":435,"react":407}],435:[function(require,module,exports){
+'use strict';
+
 module.exports = {
 	clientId: '2f5da47f3a1ee4f95059dec8',
 	scopes: 'GET:yodata.task,POST:yodata.task,PUT:yodata.task,DELETE:yodata.task,GET:user-profile,GET:files,DELETE:files,POST:files',
 	YD_AUTH_CODE: 'ydac',
-	YD_AUTH_TOKEN:'ydat'
+	YD_AUTH_TOKEN: 'ydat'
 };
-},{}],436:[function(require,module,exports){
-var _ = require('underscore');
 
-_.mixin({
+},{}],436:[function(require,module,exports){
+'use strict';
+
+var _underscore = require('underscore');
+
+var _underscore2 = _interopRequireDefault(_underscore);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+_underscore2.default.mixin({
 	/*
-	 * removes root level properties that are falsey (null, undefined, false, 0), from an object (shallow)
-	 */
-	compactObject: function(o) {
-		_.each(o, function(v, k) {
-			if (!v && !_.isBoolean(v)) {
+  * removes root level properties that are falsey (null, undefined, false, 0), from an object (shallow)
+  */
+
+	compactObject: function compactObject(o) {
+		_underscore2.default.each(o, function (v, k) {
+			if (!v && !_underscore2.default.isBoolean(v)) {
 				delete o[k];
 			}
 		});
 
 		return o;
 	},
+
 	/*
-	 * recursively searches the object to see if all properties are falsey
-	 */
-	deepIsEmpty : function(o) {
-		if (_.isNumber(o)) {
+  * recursively searches the object to see if all properties are falsey
+  */
+	deepIsEmpty: function deepIsEmpty(o) {
+		if (_underscore2.default.isNumber(o)) {
 			return false;
 		}
 
-		if (_.isBoolean(o)) {
+		if (_underscore2.default.isBoolean(o)) {
 			return !o;
 		}
 
-		if (_.isEmpty(o)) {
+		if (_underscore2.default.isEmpty(o)) {
 			return true;
 		}
 
-		if (_.isObject(o)) {
+		if (_underscore2.default.isObject(o)) {
 			var isEmpty = true;
 
-			_.each(o, function(v, k) {
-				if (!_.deepIsEmpty(v)) {
+			_underscore2.default.each(o, function (v, k) {
+				if (!_underscore2.default.deepIsEmpty(v)) {
 					isEmpty = false;
 				}
 			});
@@ -48934,41 +49448,48 @@ _.mixin({
 });
 
 },{"underscore":411}],437:[function(require,module,exports){
-var _ = require('underscore');
+'use strict';
+
+var _underscore = require('underscore');
+
+var _underscore2 = _interopRequireDefault(_underscore);
+
 require('./underscore_mixins.jsx');
 
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 module.exports = {
-	formatDateString(value) {
+	formatDateString: function formatDateString(value) {
 		if (value) {
 			var date = new Date(value);
-			return (date.getMonth() + 1) + '/' + date.getDate() + '/' +  date.getFullYear()
+			return date.getMonth() + 1 + '/' + date.getDate() + '/' + date.getFullYear();
 		}
 
 		return '';
 	},
-	buildMongoDbUpdate(original, updated) {
+	buildMongoDbUpdate: function buildMongoDbUpdate(original, updated) {
 		var modifier = {};
 
-		function addModifier(op, key, val) {
-			if (_.isUndefined(modifier[op])) {
+		var addModifier = function addModifier(op, key, val) {
+			if (_underscore2.default.isUndefined(modifier[op])) {
 				modifier[op] = {};
 			}
 
 			modifier[op][key] = val;
-		}
+		};
 
-		_.keys(updated).forEach(function(key) {
+		_underscore2.default.keys(updated).forEach(function (key) {
 			var newVal = updated[key];
 			var oldVal = original[key];
 
-			if (!_.isEqual(newVal, oldVal)) {
+			if (!_underscore2.default.isEqual(newVal, oldVal)) {
 				addModifier('$set', key, newVal);
 			}
 		});
 
-		_.keys(original).forEach(function(key) {
-			if (!_.property(key)(updated)) {
-				if (!_.deepIsEmpty(original[key])) {
+		_underscore2.default.keys(original).forEach(function (key) {
+			if (!_underscore2.default.property(key)(updated)) {
+				if (!_underscore2.default.deepIsEmpty(original[key])) {
 					addModifier('$unset', key, true);
 				}
 			}
@@ -48976,6 +49497,6 @@ module.exports = {
 
 		return modifier;
 	}
-}
+};
 
 },{"./underscore_mixins.jsx":436,"underscore":411}]},{},[413,415,416,417,418,419,420,421,422,423,424,425,426,427,428,429,430,431,432,433,434,435,436,437]);

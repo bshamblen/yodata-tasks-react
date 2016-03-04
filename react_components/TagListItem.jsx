@@ -1,7 +1,5 @@
-/** @jsx React.DOM */
-
-var React = require('react');
-var Button = require('react-bootstrap').Button;
+import React from 'react';
+import {Button} from 'react-bootstrap';
 
 module.exports = React.createClass({
 	displayName: 'TagListItem',

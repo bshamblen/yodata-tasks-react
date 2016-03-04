@@ -1,8 +1,6 @@
-/** @jsx React.DOM */
-
-var React = require('react');
-var Switch = require('react-bootstrap-switch');
-var TasksPager = require('./TasksPager.jsx');
+import React from 'react';
+import Switch from 'react-bootstrap-switch';
+import TasksPager from './TasksPager.jsx';
 
 module.exports = React.createClass({
 	displayName: 'TaskListFooter',

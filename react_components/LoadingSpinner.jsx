@@ -1,4 +1,4 @@
-var React = require('react');
+import React from 'react';
 
 module.exports = React.createClass({
 	displayName: 'LoadingSpinner',
@@ -11,7 +11,7 @@ module.exports = React.createClass({
 			return null;
 		}
 
-		var classes = 'fa fa-circle-o-notch fa-spin fa-2x ';
+		let classes = 'fa fa-circle-o-notch fa-spin fa-2x ';
 
 		if (this.props.className) {
 			classes += this.props.className;
