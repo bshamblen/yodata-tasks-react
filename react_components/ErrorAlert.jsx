@@ -41,9 +41,7 @@ module.exports = React.createClass({
 				</Alert>
 			);
 		} else {
-			return (
-				<span></span>
-			);
+			return null;
 		}
 	}
 });

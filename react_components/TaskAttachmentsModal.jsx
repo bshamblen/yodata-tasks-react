@@ -3,9 +3,12 @@
 var React = require('react');
 var Modal = require('react-bootstrap').Modal;
 var Button = require('react-bootstrap').Button;
+var ListGroup = require('react-bootstrap').ListGroup;
+var ListGroupItem = require('react-bootstrap').ListGroupItem;
 var Alert = require('react-bootstrap').Alert;
 var FileListItem = require('./FileListItem.jsx');
 var dataChangeEmitter = require('./DataChangeEmitter.js');
+var LoadingSpinner = require('./LoadingSpinner.jsx');
 
 module.exports = React.createClass({
 	displayName: 'TaskAttachmentsModal',
@@ -109,7 +112,7 @@ module.exports = React.createClass({
 
 		    self.props.api.uploadFile(formData, function(err, result) {
 		    	if (err) {
-		    		self.setState({error: err});
+		    		self.setState({error: err, saving: false});
 		    	} else {
 					self.props.api.update('yodata.task', task.objectId, {$push: {files: result.objectId}}, function(err, result) {
 						if (err) {
@@ -134,13 +137,6 @@ module.exports = React.createClass({
 	},
 	render() {
 		var self = this;
-		var errorAlert = '';
-
-		if (this.state.error) {
-			errorAlert = <Alert bsStyle="warning" onDismiss={this.clearError}><p>{this.state.error.error.name}: {this.state.error.error.message}</p></Alert>;
-		}
-
-		var spinnerClasses = 'pull-right fa fa-circle-o-notch fa-spin fa-2x' + (!this.state.saving && !this.state.loading ? ' hidden' : '');
 
 		var fileList = this.state.files.map(function(file) {
 			return (
@@ -156,7 +152,7 @@ module.exports = React.createClass({
 		});
 
 		if (fileList.length === 0) {
-			fileList = <li className="list-group-item">This task currently has no attachments. Click one of the buttons below to attach a file to this task.</li>;
+			fileList = <ListGroupItem>This task currently has no attachments. Click one of the buttons below to attach a file to this task.</ListGroupItem>
 		}
 
 		return (
@@ -165,17 +161,17 @@ module.exports = React.createClass({
 					<button type="button" className="close" onClick={this.hideModal}>x</button>
 					<Modal.Title>Attachments</Modal.Title>
 				</Modal.Header>
-				{errorAlert}
-				<ul className="list-group" style={{marginBottom: '-1px', marginTop: '-1px'}}>
+				{ this.state.error ? <Alert bsStyle="warning" onDismiss={this.clearError}><p>{this.state.error.error.name}: {this.state.error.error.message}</p></Alert> : null }
+				<ListGroup style={{marginBottom: '-1px', marginTop: '-1px'}}>
   					{fileList}
-				</ul>
+				</ListGroup>
 				<Modal.Footer>
 					<form className="text-left" style={{margin:0}}>
 						<input type="file" className="fileInput" style={{display:'none', visibility:'hidden', width:'1px'}}/>
 						<input type="hidden" id="isPublic"/>
     					<Button bsStyle="primary" onClick={this.selectFile.bind(this, false)}>Add Private File</Button>
     					<Button bsStyle="warning" onClick={this.selectFile.bind(this, true)}>Add Public File</Button>
-    					<i className={spinnerClasses}></i>
+    					<LoadingSpinner className="pull-right" show={this.state.saving || this.state.loading} />
 					</form>
 				</Modal.Footer>
 			</Modal>

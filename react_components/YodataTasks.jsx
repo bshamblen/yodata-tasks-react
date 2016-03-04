@@ -13,7 +13,6 @@ module.exports = React.createClass({
 		var loggedIn = localStorage.getItem(globals.YD_AUTH_TOKEN) ? true : false;
 
 		return {
-			loggedIn: loggedIn,
 			profile: null,
 			api: (loggedIn ? new YDClient({authToken: localStorage.getItem(globals.YD_AUTH_TOKEN)}) : null)
 		}
@@ -26,9 +25,7 @@ module.exports = React.createClass({
 				if (err) {
 					dataChangeEmitter.emit('error', err);
 				} else if (results) {
-					self.setState({
-						profile: results.profile
-					});
+					self.setState({profile: results.profile});
 				}
 			});
 		}
@@ -36,27 +33,23 @@ module.exports = React.createClass({
 	handleUserStateChange(loggedIn) {
 		if (loggedIn) {
 			this.setState({
-				loggedIn: loggedIn,
 				api: new YDClient({authToken: localStorage.getItem(globals.YD_AUTH_TOKEN)}),
 				profile: null
 			});
 		} else {
 			this.setState({
-				loggedIn: loggedIn,
 				api: null,
 				profile: null
 			});
 		}
 	},
 	render() {
-		var taskList = (this.state.api ? <FilterableTaskList api={this.state.api} /> : <span></span>);
-
 		return (
 			<div>
 				<NavBar clientId={globals.clientId} scopes={globals.scopes} api={this.state.api} onUserStateChange={this.handleUserStateChange} />
 				<div className="container">
 					<UserAvatar profile={this.state.profile}/>
-					{taskList}
+					{this.state.api ? <FilterableTaskList api={this.state.api} /> : null}
 				</div>
 			</div>
 		);

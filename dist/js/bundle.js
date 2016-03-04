@@ -47428,7 +47428,7 @@ ReactDOM.render(
 	React.createElement(YodataTasks, null),
 	document.getElementById('site-wrapper')
 );
-},{"./YodataTasks.jsx":433,"react":407,"react-dom":227}],414:[function(require,module,exports){
+},{"./YodataTasks.jsx":434,"react":407,"react-dom":227}],414:[function(require,module,exports){
 var EventEmitter = require('fbemitter').EventEmitter;
 var emitter = new EventEmitter();
 module.exports = emitter;
@@ -47477,9 +47477,7 @@ module.exports = React.createClass({
 				)
 			);
 		} else {
-			return (
-				React.createElement("span", null)
-			);
+			return null;
 		}
 	}
 });
@@ -47489,6 +47487,7 @@ module.exports = React.createClass({
 
 var React = require('react');
 var Button = require('react-bootstrap').Button;
+var ListGroupItem = require('react-bootstrap').ListGroupItem;
 
 module.exports = React.createClass({
 	displayName: 'FileListItem',
@@ -47520,7 +47519,7 @@ module.exports = React.createClass({
 		}
 
 		return (
-			React.createElement("li", {className: "list-group-item", style: {borderRadius: 0}}, 
+			React.createElement(ListGroupItem, {style: {borderRadius: 0}}, 
 				React.createElement("span", {className: "pull-right button-group"}, 
 					React.createElement(Button, {bsStyle: "default", onClick: this.handleDownloadClick}, 
 						React.createElement("i", {className: "fa fa-cloud-download"})
@@ -47546,6 +47545,7 @@ var TaskList = require('./TaskList.jsx');
 var TaskModal = require('./TaskModal.jsx');
 var ErrorAlert = require('./ErrorAlert.jsx');
 var TagsSidebar = require('./TagsSidebar.jsx');
+var LoadingSpinner = require('./LoadingSpinner.jsx');
 var TaskListFooter = require('./TaskListFooter.jsx');
 var dataChangeEmitter = require('./DataChangeEmitter.js');
 var TaskAttachmentsModal = require('./TaskAttachmentsModal.jsx');
@@ -47660,14 +47660,6 @@ module.exports = React.createClass({
 		this.setState({editTask: task, showTaskModal: true});
 	},
 	render() {
-		var spinner = (
-			React.createElement("i", {className: "pull-right fa fa-circle-o-notch fa-spin fa-2x"})
-		);
-
-		if (!this.state.loadingTasks && !this.state.loadingTags) {
-			spinner = '';
-		}
-
 		return (
 			React.createElement("div", {className: "row"}, 
 				React.createElement(ErrorAlert, null), 
@@ -47680,7 +47672,7 @@ module.exports = React.createClass({
 					React.createElement("div", {className: "panel panel-default"}, 
 						React.createElement("div", {className: "panel-heading"}, 
 							React.createElement("button", {type: "button", className: "btn btn-primary", onClick: this.showTaskModal}, "New Task"), 
-							spinner
+							React.createElement(LoadingSpinner, {className: "pull-right", show: this.state.loadingTasks || this.state.loadingTags})
 						), 
 						React.createElement(TaskList, {
 							tasks: this.state.tasks, 
@@ -47712,7 +47704,33 @@ module.exports = React.createClass({
 		);
 	}
 });
-},{"./DataChangeEmitter.js":414,"./ErrorAlert.jsx":415,"./TagsSidebar.jsx":421,"./TaskAttachmentsModal.jsx":422,"./TaskList.jsx":426,"./TaskListFooter.jsx":427,"./TaskModal.jsx":429,"react":407}],418:[function(require,module,exports){
+},{"./DataChangeEmitter.js":414,"./ErrorAlert.jsx":415,"./LoadingSpinner.jsx":418,"./TagsSidebar.jsx":422,"./TaskAttachmentsModal.jsx":423,"./TaskList.jsx":427,"./TaskListFooter.jsx":428,"./TaskModal.jsx":430,"react":407}],418:[function(require,module,exports){
+var React = require('react');
+
+module.exports = React.createClass({
+	displayName: 'LoadingSpinner',
+	propTypes: {
+		classNames: React.PropTypes.string,
+		show: React.PropTypes.bool
+	},
+	render() {
+		if (!this.props.show) {
+			return null;
+		}
+
+		var classes = 'fa fa-circle-o-notch fa-spin fa-2x ';
+
+		if (this.props.className) {
+			classes += this.props.className;
+		}
+
+		return (
+			React.createElement("i", {className: classes})
+		);
+	}
+});
+
+},{"react":407}],419:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var React = require('react');
@@ -47750,7 +47768,7 @@ module.exports = React.createClass({
 	}
 });
 
-},{"./YodataLoginButton.jsx":432,"react":407}],419:[function(require,module,exports){
+},{"./YodataLoginButton.jsx":433,"react":407}],420:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var React = require('react');
@@ -47794,10 +47812,11 @@ module.exports = React.createClass({
 	}	
 });
 
-},{"react":407}],420:[function(require,module,exports){
+},{"react":407}],421:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var React = require('react');
+var Button = require('react-bootstrap').Button;
 
 module.exports = React.createClass({
 	displayName: 'TagListItem',
@@ -47811,7 +47830,7 @@ module.exports = React.createClass({
 	render() {
 		return (
 			React.createElement("li", null, 
-				React.createElement("button", {type: "button", className: "btn btn-default btn-xs btn-task-tag", onClick: this.handleButtonClick}, 
+				React.createElement(Button, {bsStyle: "default", bsSize: "xsmall", className: "btn-task-tag", onClick: this.handleButtonClick}, 
 					this.props.tag._id, " ", React.createElement("span", {className: "badge"}, this.props.tag.count)
 				)
 			)
@@ -47819,11 +47838,12 @@ module.exports = React.createClass({
 	}
 });
 
-},{"react":407}],421:[function(require,module,exports){
+},{"react":407,"react-bootstrap":216}],422:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var React = require('react');
 var TagListItem = require('./TagListItem.jsx');
+var Panel = require('react-bootstrap').Panel;
 
 module.exports = React.createClass({
 	displayName: 'TagsSidebar',
@@ -47852,7 +47872,7 @@ module.exports = React.createClass({
 				return React.createElement(TagListItem, {key: tag._id, tag: tag, onTagSelect: self.handleTagSelect})
 			});
 
-			var selectedTagHeader = '';
+			var selectedTagHeader;
 
 			if (this.props.selectedTag) {
 				selectedTagHeader = (
@@ -47864,37 +47884,33 @@ module.exports = React.createClass({
 			}
 
 			return (
-				React.createElement("div", {id: "tagsColumn", className: "col-sm-3"}, 
-					React.createElement("div", {className: "panel panel-default"}, 
-						React.createElement("div", {className: "panel-heading"}, 
-							React.createElement("div", {className: "panel-heading-text"}, "Tags")
-						), 
-						React.createElement("div", {className: "panel-body"}, 
-							selectedTagHeader, 
-							React.createElement("ul", {id: "tagList", className: "list-inline"}, 
-								tagList
-							)
+				React.createElement("div", {className: "col-sm-3"}, 
+					React.createElement(Panel, {header: "Tags"}, 
+						selectedTagHeader, 
+						React.createElement("ul", {className: "list-inline"}, 
+							tagList
 						)
 					)
 				)
 			);
 		}
 
-		return (
-			React.createElement("span", null)
-		);
+		return null;
 	}
 });
 
-},{"./TagListItem.jsx":420,"react":407}],422:[function(require,module,exports){
+},{"./TagListItem.jsx":421,"react":407,"react-bootstrap":216}],423:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var React = require('react');
 var Modal = require('react-bootstrap').Modal;
 var Button = require('react-bootstrap').Button;
+var ListGroup = require('react-bootstrap').ListGroup;
+var ListGroupItem = require('react-bootstrap').ListGroupItem;
 var Alert = require('react-bootstrap').Alert;
 var FileListItem = require('./FileListItem.jsx');
 var dataChangeEmitter = require('./DataChangeEmitter.js');
+var LoadingSpinner = require('./LoadingSpinner.jsx');
 
 module.exports = React.createClass({
 	displayName: 'TaskAttachmentsModal',
@@ -47998,7 +48014,7 @@ module.exports = React.createClass({
 
 		    self.props.api.uploadFile(formData, function(err, result) {
 		    	if (err) {
-		    		self.setState({error: err});
+		    		self.setState({error: err, saving: false});
 		    	} else {
 					self.props.api.update('yodata.task', task.objectId, {$push: {files: result.objectId}}, function(err, result) {
 						if (err) {
@@ -48023,13 +48039,6 @@ module.exports = React.createClass({
 	},
 	render() {
 		var self = this;
-		var errorAlert = '';
-
-		if (this.state.error) {
-			errorAlert = React.createElement(Alert, {bsStyle: "warning", onDismiss: this.clearError}, React.createElement("p", null, this.state.error.error.name, ": ", this.state.error.error.message));
-		}
-
-		var spinnerClasses = 'pull-right fa fa-circle-o-notch fa-spin fa-2x' + (!this.state.saving && !this.state.loading ? ' hidden' : '');
 
 		var fileList = this.state.files.map(function(file) {
 			return (
@@ -48045,7 +48054,7 @@ module.exports = React.createClass({
 		});
 
 		if (fileList.length === 0) {
-			fileList = React.createElement("li", {className: "list-group-item"}, "This task currently has no attachments. Click one of the buttons below to attach a file to this task.");
+			fileList = React.createElement(ListGroupItem, null, "This task currently has no attachments. Click one of the buttons below to attach a file to this task.")
 		}
 
 		return (
@@ -48054,8 +48063,8 @@ module.exports = React.createClass({
 					React.createElement("button", {type: "button", className: "close", onClick: this.hideModal}, "x"), 
 					React.createElement(Modal.Title, null, "Attachments")
 				), 
-				errorAlert, 
-				React.createElement("ul", {className: "list-group", style: {marginBottom: '-1px', marginTop: '-1px'}}, 
+				 this.state.error ? React.createElement(Alert, {bsStyle: "warning", onDismiss: this.clearError}, React.createElement("p", null, this.state.error.error.name, ": ", this.state.error.error.message)) : null, 
+				React.createElement(ListGroup, {style: {marginBottom: '-1px', marginTop: '-1px'}}, 
   					fileList
 				), 
 				React.createElement(Modal.Footer, null, 
@@ -48064,7 +48073,7 @@ module.exports = React.createClass({
 						React.createElement("input", {type: "hidden", id: "isPublic"}), 
     					React.createElement(Button, {bsStyle: "primary", onClick: this.selectFile.bind(this, false)}, "Add Private File"), 
     					React.createElement(Button, {bsStyle: "warning", onClick: this.selectFile.bind(this, true)}, "Add Public File"), 
-    					React.createElement("i", {className: spinnerClasses})
+    					React.createElement(LoadingSpinner, {className: "pull-right", show: this.state.saving || this.state.loading})
 					)
 				)
 			)
@@ -48072,7 +48081,7 @@ module.exports = React.createClass({
 	}	
 });
 
-},{"./DataChangeEmitter.js":414,"./FileListItem.jsx":416,"react":407,"react-bootstrap":216}],423:[function(require,module,exports){
+},{"./DataChangeEmitter.js":414,"./FileListItem.jsx":416,"./LoadingSpinner.jsx":418,"react":407,"react-bootstrap":216}],424:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var React = require('react');
@@ -48091,21 +48100,9 @@ module.exports = React.createClass({
 		if (task.deleted) {
 			var query = {$set: {deleted: false}};
 
-			this.props.api.update('yodata.task', task.objectId, query, function(err, results) {
-				if (err) {
-					dataChangeEmitter.emit('error', err);
-				} else {
-					dataChangeEmitter.emit('event');
-				}
-			});
+			this.props.api.update('yodata.task', task.objectId, query, updateCallback);
 		} else {
-			this.props.api.update('yodata.task', task.objectId, {$set: {completed: !task.completed}}, function(err, results) {
-				if (err) {
-					dataChangeEmitter.emit('error', err);
-				} else {
-					dataChangeEmitter.emit('event');
-				}
-			});
+			this.props.api.update('yodata.task', task.objectId, {$set: {completed: !task.completed}}, updateCallback);
 		}
 	},
 	render() {
@@ -48116,10 +48113,8 @@ module.exports = React.createClass({
 				)
 			);
 		} else {
-			var buttonClasses = this.props.task.completed ? 'success' : 'default';
-
 			return (
-				React.createElement(Button, {bsStyle: buttonClasses, onClick: this.handleButtonClick}, 
+				React.createElement(Button, {bsStyle: this.props.task.completed ? 'success' : 'default', onClick: this.handleButtonClick}, 
 					React.createElement("i", {className: "fa fa-check"})
 				)
 			);
@@ -48127,7 +48122,15 @@ module.exports = React.createClass({
 	}
 });
 
-},{"./DataChangeEmitter.js":414,"react":407,"react-bootstrap":216}],424:[function(require,module,exports){
+function updateCallback(err, results) {
+	if (err) {
+		dataChangeEmitter.emit('error', err);
+	} else {
+		dataChangeEmitter.emit('event');
+	}
+}
+
+},{"./DataChangeEmitter.js":414,"react":407,"react-bootstrap":216}],425:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var React = require('react');
@@ -48152,30 +48155,25 @@ module.exports = React.createClass({
 		this.setState({show: show});
 	},
 	render() {
-		var modal = '';
-
-		if (this.state.show) {
-			modal = React.createElement(TaskDeleteModal, {showModal: this.handleModalState, task: this.props.task, api: this.props.api});
-		}
-
 		return (
 			React.createElement("span", null, 
 				React.createElement(Button, {bsStyle: "danger", style: {zIndex: 100}, onClick: this.showDeleteModal}, 
 					React.createElement("i", {className: "fa fa-trash"})
 				), 
-				modal
+				this.state.show ? React.createElement(TaskDeleteModal, React.__spread({showModal: this.handleModalState},  this.props)) : null
 			)
 		);
 	}
 });
 
-},{"./TaskDeleteModal.jsx":425,"react":407,"react-bootstrap":216}],425:[function(require,module,exports){
+},{"./TaskDeleteModal.jsx":426,"react":407,"react-bootstrap":216}],426:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var React = require('react');
 var Modal = require('react-bootstrap').Modal;
 var Button = require('react-bootstrap').Button;
 var dataChangeEmitter = require('./DataChangeEmitter.js');
+var LoadingSpinner = require('./LoadingSpinner.jsx');
 
 module.exports = React.createClass({
 	displayName: 'TaskDeleteModal',
@@ -48194,32 +48192,18 @@ module.exports = React.createClass({
 	},
 	softDeleteTask() {
 		var query = {$set: {deleted: true}};
-
-		this.props.api.update('yodata.task', this.props.task.objectId, query, function(err, results) {
-			if (err) {
-				dataChangeEmitter.emit('error', err);
-			} else {
-				dataChangeEmitter.emit('event');
-			}
-		});
+		this.props.api.update('yodata.task', this.props.task.objectId, query, apiCallback);
 	},
 	handleButtonClick() {
 		var task = this.props.task;
 
 		if (task.deleted) {
-			this.props.api.remove('yodata.task', task.objectId, function(err, results) {
-				if (err) {
-					dataChangeEmitter.emit('error', err);
-				} else {
-					dataChangeEmitter.emit('event');
-				}
-			});
+			this.props.api.remove('yodata.task', task.objectId, apiCallback);
 		} else {
 			this.softDeleteTask();
 		}
 	},
 	render() {
-		var spinner = this.state.deleting ? React.createElement("i", {class: "pull-right fa fa-circle-o-notch fa-spin fa-2x"}) : '';
 		var task = this.props.task;
 
 		return (
@@ -48236,7 +48220,7 @@ module.exports = React.createClass({
 					React.createElement(Modal.Footer, null, 
 						React.createElement(Button, {bsStyle: "default", onClick: this.hideModal}, "Cancel"), 
 						React.createElement(Button, {bsStyle: "danger", onClick: this.handleButtonClick}, "Delete"), 
-						spinner
+						React.createElement(LoadingSpinner, {className: "pull-right", show: this.state.deleting})
 					)
 				)
 			)
@@ -48244,7 +48228,15 @@ module.exports = React.createClass({
 	}
 });
 
-},{"./DataChangeEmitter.js":414,"react":407,"react-bootstrap":216}],426:[function(require,module,exports){
+function apiCallback(err, results) {
+	if (err) {
+		dataChangeEmitter.emit('error', err);
+	} else {
+		dataChangeEmitter.emit('event');
+	}
+}
+
+},{"./DataChangeEmitter.js":414,"./LoadingSpinner.jsx":418,"react":407,"react-bootstrap":216}],427:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var React = require('react');
@@ -48261,8 +48253,12 @@ module.exports = React.createClass({
 		this.props.onRowClick(task);
 	},
 	render() {
+		if (!this.props.tasks || this.props.tasks.length === 0) {
+			return null;
+		}
+
 		var self = this;
-		var taskList = this.props.tasks ? this.props.tasks.map(function(task) {
+		var taskList = this.props.tasks.map(function(task) {
 			return (
 				React.createElement(TaskListItem, {
 					key: task.objectId, 
@@ -48272,7 +48268,7 @@ module.exports = React.createClass({
 					onRowClick: self.handleRowClick}
 				)
 			);
-		}) : [];
+		});
 
 		return (
 			React.createElement("table", {className: "table table-hover"}, 
@@ -48284,7 +48280,7 @@ module.exports = React.createClass({
 	}
 });
 
-},{"./TaskListItem.jsx":428,"react":407}],427:[function(require,module,exports){
+},{"./TaskListItem.jsx":429,"react":407}],428:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var React = require('react');
@@ -48329,7 +48325,7 @@ module.exports = React.createClass({
 	}
 });
 
-},{"./TasksPager.jsx":430,"react":407,"react-bootstrap-switch":144}],428:[function(require,module,exports){
+},{"./TasksPager.jsx":431,"react":407,"react-bootstrap-switch":144}],429:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var React = require('react');
@@ -48355,6 +48351,7 @@ module.exports = React.createClass({
 		var now = new Date();
 		var pastDue = (dueDate && dueDate < now);
 		var headingClass = 'list-group-item-heading'
+		var taskPriority, hasFiles, dueDateDiv, taskNotes; 
 
 		if (task.completed) {
 			headingClass += ' task-muted';
@@ -48364,25 +48361,17 @@ module.exports = React.createClass({
 			headingClass += ' text-danger';
 		}
 
-		var taskPriority = '';
-
 		if (task.priority && task.priority === 'high' || task.priority === 'low') {
 			taskPriority = React.createElement("i", {className: task.priority === 'high' ? 'fa fa-arrow-up text-danger' : 'fa fa-arrow-down text-success', style: {marginLeft: '5px'}});
 		}
-
-		var hasFiles = '';
 
 		if (task.files && task.files.length > 0) {
 			hasFiles = React.createElement("i", {className: "fa fa-paperclip", style: {marginLeft: '5px'}});
 		}
 
-		var dueDateDiv = '';
-
 		if (dueDate) {
 			dueDateDiv = React.createElement("div", {className: pastDue ? 'text-danger small' : 'small'}, "Due: ", utils.formatDateString(task.dueDate));
 		}
-
-		var taskNotes = '';
 
 		if (task.notes && task.notes.length > 0) {
 			taskNotes = React.createElement("p", {className: task.completed ? 'list-group-item-text task-muted' : 'list-group-item-text', style: {whiteSpace: 'pre-wrap', marginTop: '9px'}}, task.notes); 
@@ -48407,13 +48396,14 @@ module.exports = React.createClass({
 	}
 });
 
-},{"./TaskCompleteButton.jsx":423,"./TaskDeleteButton.jsx":424,"./utils.jsx":436,"react":407}],429:[function(require,module,exports){
+},{"./TaskCompleteButton.jsx":424,"./TaskDeleteButton.jsx":425,"./utils.jsx":437,"react":407}],430:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var React = require('react');
 var Modal = require('react-bootstrap').Modal;
 var Button = require('react-bootstrap').Button;
 var Alert = require('react-bootstrap').Alert;
+var LoadingSpinner = require('./LoadingSpinner.jsx');
 var _ = require('underscore');
 require('./underscore_mixins.jsx');
 var utils = require('./utils.jsx');
@@ -48554,7 +48544,6 @@ module.exports = React.createClass({
 	render() {
 		var hasTask = this.props.task ? true : false;
 		var modalTitle = hasTask? 'Edit Task' : 'Insert Task';
-		var spinnerClasses = 'pull-right fa fa-circle-o-notch fa-spin fa-2x' + (!this.state.saving ? ' hidden' : '');
 		var errorAlert = '';
 
 		if (this.state.error) {
@@ -48615,14 +48604,14 @@ module.exports = React.createClass({
 				React.createElement(Modal.Footer, null, 
 					React.createElement(Button, {bsStyle: "primary", className: "pull-left", onClick: this.saveTask}, this.props.task ? 'Update' : 'Save'), 
 					hasTask ? React.createElement(Button, {bsStyle: "default", className: "pull-left", onClick: this.showAttachmentsModal}, "View/Edit Attachments") : '', 
-					React.createElement("i", {className: spinnerClasses})
+					React.createElement(LoadingSpinner, {className: "pull-right", show: this.state.saving})
 				)
 			)
 		);
 	}	
 });
 
-},{"./DataChangeEmitter.js":414,"./underscore_mixins.jsx":435,"./utils.jsx":436,"react":407,"react-bootstrap":216,"underscore":411}],430:[function(require,module,exports){
+},{"./DataChangeEmitter.js":414,"./LoadingSpinner.jsx":418,"./underscore_mixins.jsx":436,"./utils.jsx":437,"react":407,"react-bootstrap":216,"underscore":411}],431:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var React = require('react');
@@ -48640,7 +48629,7 @@ module.exports = React.createClass({
 	},
 	render() {
 		if (!this.props.meta) {
-			return React.createElement("span", null);
+			return null;
 		}
 
 		var firstPage = this.props.meta['first-page'];
@@ -48666,7 +48655,7 @@ module.exports = React.createClass({
 		);
 	}
 })
-},{"./PagerLink.jsx":419,"react":407}],431:[function(require,module,exports){
+},{"./PagerLink.jsx":420,"react":407}],432:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var React = require('react');
@@ -48697,7 +48686,7 @@ module.exports = React.createClass({
 	}
 });
 
-},{"react":407}],432:[function(require,module,exports){
+},{"react":407}],433:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var React = require('react');
@@ -48831,7 +48820,7 @@ module.exports = React.createClass({
 	}
 });
 
-},{"./globals.jsx":434,"react":407}],433:[function(require,module,exports){
+},{"./globals.jsx":435,"react":407}],434:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var React = require('react');
@@ -48847,7 +48836,6 @@ module.exports = React.createClass({
 		var loggedIn = localStorage.getItem(globals.YD_AUTH_TOKEN) ? true : false;
 
 		return {
-			loggedIn: loggedIn,
 			profile: null,
 			api: (loggedIn ? new YDClient({authToken: localStorage.getItem(globals.YD_AUTH_TOKEN)}) : null)
 		}
@@ -48860,9 +48848,7 @@ module.exports = React.createClass({
 				if (err) {
 					dataChangeEmitter.emit('error', err);
 				} else if (results) {
-					self.setState({
-						profile: results.profile
-					});
+					self.setState({profile: results.profile});
 				}
 			});
 		}
@@ -48870,40 +48856,36 @@ module.exports = React.createClass({
 	handleUserStateChange(loggedIn) {
 		if (loggedIn) {
 			this.setState({
-				loggedIn: loggedIn,
 				api: new YDClient({authToken: localStorage.getItem(globals.YD_AUTH_TOKEN)}),
 				profile: null
 			});
 		} else {
 			this.setState({
-				loggedIn: loggedIn,
 				api: null,
 				profile: null
 			});
 		}
 	},
 	render() {
-		var taskList = (this.state.api ? React.createElement(FilterableTaskList, {api: this.state.api}) : React.createElement("span", null));
-
 		return (
 			React.createElement("div", null, 
 				React.createElement(NavBar, {clientId: globals.clientId, scopes: globals.scopes, api: this.state.api, onUserStateChange: this.handleUserStateChange}), 
 				React.createElement("div", {className: "container"}, 
 					React.createElement(UserAvatar, {profile: this.state.profile}), 
-					taskList
+					this.state.api ? React.createElement(FilterableTaskList, {api: this.state.api}) : null
 				)
 			)
 		);
 	}
 });
-},{"./DataChangeEmitter.js":414,"./FilterableTaskList.jsx":417,"./NavBar.jsx":418,"./UserAvatar.jsx":431,"./globals.jsx":434,"react":407}],434:[function(require,module,exports){
+},{"./DataChangeEmitter.js":414,"./FilterableTaskList.jsx":417,"./NavBar.jsx":419,"./UserAvatar.jsx":432,"./globals.jsx":435,"react":407}],435:[function(require,module,exports){
 module.exports = {
 	clientId: '2f5da47f3a1ee4f95059dec8',
 	scopes: 'GET:yodata.task,POST:yodata.task,PUT:yodata.task,DELETE:yodata.task,GET:user-profile,GET:files,DELETE:files,POST:files',
 	YD_AUTH_CODE: 'ydac',
 	YD_AUTH_TOKEN:'ydat'
 };
-},{}],435:[function(require,module,exports){
+},{}],436:[function(require,module,exports){
 var _ = require('underscore');
 
 _.mixin({
@@ -48951,7 +48933,7 @@ _.mixin({
 	}
 });
 
-},{"underscore":411}],436:[function(require,module,exports){
+},{"underscore":411}],437:[function(require,module,exports){
 var _ = require('underscore');
 require('./underscore_mixins.jsx');
 
@@ -48996,4 +48978,4 @@ module.exports = {
 	}
 }
 
-},{"./underscore_mixins.jsx":435,"underscore":411}]},{},[413,415,416,417,418,419,420,421,422,423,424,425,426,427,428,429,430,431,432,433,434,435,436]);
+},{"./underscore_mixins.jsx":436,"underscore":411}]},{},[413,415,416,417,418,419,420,421,422,423,424,425,426,427,428,429,430,431,432,433,434,435,436,437]);

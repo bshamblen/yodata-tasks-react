@@ -2,6 +2,7 @@
 
 var React = require('react');
 var TagListItem = require('./TagListItem.jsx');
+var Panel = require('react-bootstrap').Panel;
 
 module.exports = React.createClass({
 	displayName: 'TagsSidebar',
@@ -30,7 +31,7 @@ module.exports = React.createClass({
 				return <TagListItem key={tag._id} tag={tag} onTagSelect={self.handleTagSelect}/>
 			});
 
-			var selectedTagHeader = '';
+			var selectedTagHeader;
 
 			if (this.props.selectedTag) {
 				selectedTagHeader = (
@@ -42,24 +43,17 @@ module.exports = React.createClass({
 			}
 
 			return (
-				<div id="tagsColumn" className="col-sm-3">
-					<div className="panel panel-default">
-						<div className="panel-heading">
-							<div className="panel-heading-text">Tags</div>
-						</div>
-						<div className="panel-body">
-							{selectedTagHeader}
-							<ul id="tagList" className="list-inline">
-								{tagList}
-							</ul>
-						</div>
-					</div>
+				<div className="col-sm-3">
+					<Panel header="Tags">
+						{selectedTagHeader}
+						<ul className="list-inline">
+							{tagList}
+						</ul>
+					</Panel>
 				</div>
 			);
 		}
 
-		return (
-			<span></span>
-		);
+		return null;
 	}
 });

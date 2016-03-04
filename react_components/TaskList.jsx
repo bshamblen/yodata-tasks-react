@@ -14,8 +14,12 @@ module.exports = React.createClass({
 		this.props.onRowClick(task);
 	},
 	render() {
+		if (!this.props.tasks || this.props.tasks.length === 0) {
+			return null;
+		}
+
 		var self = this;
-		var taskList = this.props.tasks ? this.props.tasks.map(function(task) {
+		var taskList = this.props.tasks.map(function(task) {
 			return (
 				<TaskListItem
 					key={task.objectId}
@@ -25,7 +29,7 @@ module.exports = React.createClass({
 					onRowClick={self.handleRowClick}
 				/>
 			);
-		}) : [];
+		});
 
 		return (
 			<table className="table table-hover">

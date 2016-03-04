@@ -1,6 +1,7 @@
 /** @jsx React.DOM */
 
 var React = require('react');
+var Button = require('react-bootstrap').Button;
 
 module.exports = React.createClass({
 	displayName: 'TagListItem',
@@ -14,9 +15,9 @@ module.exports = React.createClass({
 	render() {
 		return (
 			<li>
-				<button type="button" className="btn btn-default btn-xs btn-task-tag" onClick={this.handleButtonClick}>
+				<Button bsStyle="default" bsSize="xsmall" className="btn-task-tag" onClick={this.handleButtonClick}>
 					{this.props.tag._id} <span className="badge">{this.props.tag.count}</span>
-				</button>
+				</Button>
 			</li>
 		);
 	}

@@ -4,6 +4,7 @@ var React = require('react');
 var Modal = require('react-bootstrap').Modal;
 var Button = require('react-bootstrap').Button;
 var dataChangeEmitter = require('./DataChangeEmitter.js');
+var LoadingSpinner = require('./LoadingSpinner.jsx');
 
 module.exports = React.createClass({
 	displayName: 'TaskDeleteModal',
@@ -22,32 +23,18 @@ module.exports = React.createClass({
 	},
 	softDeleteTask() {
 		var query = {$set: {deleted: true}};
-
-		this.props.api.update('yodata.task', this.props.task.objectId, query, function(err, results) {
-			if (err) {
-				dataChangeEmitter.emit('error', err);
-			} else {
-				dataChangeEmitter.emit('event');
-			}
-		});
+		this.props.api.update('yodata.task', this.props.task.objectId, query, apiCallback);
 	},
 	handleButtonClick() {
 		var task = this.props.task;
 
 		if (task.deleted) {
-			this.props.api.remove('yodata.task', task.objectId, function(err, results) {
-				if (err) {
-					dataChangeEmitter.emit('error', err);
-				} else {
-					dataChangeEmitter.emit('event');
-				}
-			});
+			this.props.api.remove('yodata.task', task.objectId, apiCallback);
 		} else {
 			this.softDeleteTask();
 		}
 	},
 	render() {
-		var spinner = this.state.deleting ? <i class="pull-right fa fa-circle-o-notch fa-spin fa-2x"></i> : '';
 		var task = this.props.task;
 
 		return (
@@ -64,10 +51,18 @@ module.exports = React.createClass({
 					<Modal.Footer>
 						<Button bsStyle="default" onClick={this.hideModal}>Cancel</Button>
 						<Button bsStyle="danger" onClick={this.handleButtonClick}>Delete</Button>
-						{spinner}
+						<LoadingSpinner className="pull-right" show={this.state.deleting} />
 					</Modal.Footer>
 				</div>
 			</Modal.Dialog>
 		);
 	}
 });
+
+function apiCallback(err, results) {
+	if (err) {
+		dataChangeEmitter.emit('error', err);
+	} else {
+		dataChangeEmitter.emit('event');
+	}
+}

@@ -5,6 +5,7 @@ var TaskList = require('./TaskList.jsx');
 var TaskModal = require('./TaskModal.jsx');
 var ErrorAlert = require('./ErrorAlert.jsx');
 var TagsSidebar = require('./TagsSidebar.jsx');
+var LoadingSpinner = require('./LoadingSpinner.jsx');
 var TaskListFooter = require('./TaskListFooter.jsx');
 var dataChangeEmitter = require('./DataChangeEmitter.js');
 var TaskAttachmentsModal = require('./TaskAttachmentsModal.jsx');
@@ -119,14 +120,6 @@ module.exports = React.createClass({
 		this.setState({editTask: task, showTaskModal: true});
 	},
 	render() {
-		var spinner = (
-			<i className="pull-right fa fa-circle-o-notch fa-spin fa-2x"></i>
-		);
-
-		if (!this.state.loadingTasks && !this.state.loadingTags) {
-			spinner = '';
-		}
-
 		return (
 			<div className="row">
 				<ErrorAlert />
@@ -139,7 +132,7 @@ module.exports = React.createClass({
 					<div className="panel panel-default">
 						<div className="panel-heading">
 							<button type="button" className="btn btn-primary" onClick={this.showTaskModal}>New Task</button>
-							{spinner}
+							<LoadingSpinner className="pull-right" show={this.state.loadingTasks || this.state.loadingTags} />
 						</div>
 						<TaskList
 							tasks={this.state.tasks}

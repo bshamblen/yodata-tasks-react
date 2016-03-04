@@ -16,21 +16,9 @@ module.exports = React.createClass({
 		if (task.deleted) {
 			var query = {$set: {deleted: false}};
 
-			this.props.api.update('yodata.task', task.objectId, query, function(err, results) {
-				if (err) {
-					dataChangeEmitter.emit('error', err);
-				} else {
-					dataChangeEmitter.emit('event');
-				}
-			});
+			this.props.api.update('yodata.task', task.objectId, query, updateCallback);
 		} else {
-			this.props.api.update('yodata.task', task.objectId, {$set: {completed: !task.completed}}, function(err, results) {
-				if (err) {
-					dataChangeEmitter.emit('error', err);
-				} else {
-					dataChangeEmitter.emit('event');
-				}
-			});
+			this.props.api.update('yodata.task', task.objectId, {$set: {completed: !task.completed}}, updateCallback);
 		}
 	},
 	render() {
@@ -41,13 +29,19 @@ module.exports = React.createClass({
 				</Button>
 			);
 		} else {
-			var buttonClasses = this.props.task.completed ? 'success' : 'default';
-
 			return (
-				<Button bsStyle={buttonClasses} onClick={this.handleButtonClick}>
+				<Button bsStyle={this.props.task.completed ? 'success' : 'default'} onClick={this.handleButtonClick}>
 					<i className="fa fa-check"></i>
 				</Button>
 			);
 		}
 	}
 });
+
+function updateCallback(err, results) {
+	if (err) {
+		dataChangeEmitter.emit('error', err);
+	} else {
+		dataChangeEmitter.emit('event');
+	}
+}

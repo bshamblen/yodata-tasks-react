@@ -15,7 +15,7 @@ module.exports = React.createClass({
 	},
 	render() {
 		if (!this.props.meta) {
-			return <span></span>;
+			return null;
 		}
 
 		var firstPage = this.props.meta['first-page'];

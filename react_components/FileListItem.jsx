@@ -2,6 +2,7 @@
 
 var React = require('react');
 var Button = require('react-bootstrap').Button;
+var ListGroupItem = require('react-bootstrap').ListGroupItem;
 
 module.exports = React.createClass({
 	displayName: 'FileListItem',
@@ -33,7 +34,7 @@ module.exports = React.createClass({
 		}
 
 		return (
-			<li className="list-group-item" style={{borderRadius: 0}}>
+			<ListGroupItem style={{borderRadius: 0}}>
 				<span className="pull-right button-group">
 					<Button bsStyle="default" onClick={this.handleDownloadClick}>
 						<i className="fa fa-cloud-download"></i>
@@ -46,7 +47,7 @@ module.exports = React.createClass({
 				<h5 className="list-group-item-heading">{file.fileName + file.fileExtension}</h5>
 				<div className="clearfix"></div>
 				{url}
-			</li>
+			</ListGroupItem>
 		);
 	}
 });

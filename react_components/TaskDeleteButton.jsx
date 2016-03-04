@@ -22,18 +22,12 @@ module.exports = React.createClass({
 		this.setState({show: show});
 	},
 	render() {
-		var modal = '';
-
-		if (this.state.show) {
-			modal = <TaskDeleteModal showModal={this.handleModalState} task={this.props.task} api={this.props.api} />;
-		}
-
 		return (
 			<span>
 				<Button bsStyle="danger" style={{zIndex: 100}} onClick={this.showDeleteModal}>
 					<i className="fa fa-trash"></i>
 				</Button>
-				{modal}
+				{this.state.show ? <TaskDeleteModal showModal={this.handleModalState} {...this.props} /> : null}
 			</span>
 		);
 	}

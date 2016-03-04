@@ -4,6 +4,7 @@ var React = require('react');
 var Modal = require('react-bootstrap').Modal;
 var Button = require('react-bootstrap').Button;
 var Alert = require('react-bootstrap').Alert;
+var LoadingSpinner = require('./LoadingSpinner.jsx');
 var _ = require('underscore');
 require('./underscore_mixins.jsx');
 var utils = require('./utils.jsx');
@@ -144,7 +145,6 @@ module.exports = React.createClass({
 	render() {
 		var hasTask = this.props.task ? true : false;
 		var modalTitle = hasTask? 'Edit Task' : 'Insert Task';
-		var spinnerClasses = 'pull-right fa fa-circle-o-notch fa-spin fa-2x' + (!this.state.saving ? ' hidden' : '');
 		var errorAlert = '';
 
 		if (this.state.error) {
@@ -205,7 +205,7 @@ module.exports = React.createClass({
 				<Modal.Footer>
 					<Button bsStyle="primary" className="pull-left" onClick={this.saveTask}>{this.props.task ? 'Update' : 'Save'}</Button>
 					{hasTask ? <Button bsStyle="default" className="pull-left" onClick={this.showAttachmentsModal}>View/Edit Attachments</Button> : ''}
-					<i className={spinnerClasses}></i>
+					<LoadingSpinner className="pull-right" show={this.state.saving} />
 				</Modal.Footer>
 			</Modal>
 		);

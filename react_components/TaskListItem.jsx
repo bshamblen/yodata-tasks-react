@@ -23,6 +23,7 @@ module.exports = React.createClass({
 		var now = new Date();
 		var pastDue = (dueDate && dueDate < now);
 		var headingClass = 'list-group-item-heading'
+		var taskPriority, hasFiles, dueDateDiv, taskNotes; 
 
 		if (task.completed) {
 			headingClass += ' task-muted';
@@ -32,25 +33,17 @@ module.exports = React.createClass({
 			headingClass += ' text-danger';
 		}
 
-		var taskPriority = '';
-
 		if (task.priority && task.priority === 'high' || task.priority === 'low') {
 			taskPriority = <i className={task.priority === 'high' ? 'fa fa-arrow-up text-danger' : 'fa fa-arrow-down text-success'} style={{marginLeft: '5px'}}></i>;
 		}
-
-		var hasFiles = '';
 
 		if (task.files && task.files.length > 0) {
 			hasFiles = <i className="fa fa-paperclip" style={{marginLeft: '5px'}}></i>;
 		}
 
-		var dueDateDiv = '';
-
 		if (dueDate) {
 			dueDateDiv = <div className={pastDue ? 'text-danger small' : 'small'}>Due: {utils.formatDateString(task.dueDate)}</div>;
 		}
-
-		var taskNotes = '';
 
 		if (task.notes && task.notes.length > 0) {
 			taskNotes = <p className={task.completed ? 'list-group-item-text task-muted' : 'list-group-item-text'} style={{whiteSpace: 'pre-wrap', marginTop: '9px'}}>{task.notes}</p>; 
