@@ -1,6 +1,6 @@
 # yodata-tasks-react
 
-**Yodata Tasks React** is a sample task manager website, written with React.js, which accesses the [Yodata](https://yodata.io) platform to perform CRUD operations against the `yodata.task` and `files` models. 
+**Yodata Tasks React** is a sample task manager website, written with React.js, which accesses the [Yodata](https://yodata.io) platform to perform CRUD operations against the `yodata.task` and `files` models. This project uses the ES6 version of JavaScript for the React components, Babel to transform to standard JavaScript, and Browserify to package the React components into one distributable bundle.
 
 ## Install
 
